@@ -1,0 +1,6 @@
+@AviTrack.Api_HostAddress = http://localhost:5251
+
+GET {{AviTrack.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
