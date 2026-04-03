@@ -1,0 +1,5 @@
+avitrack-backend/bin/
+avitrack-backend/obj/
+
+avitrack-frontend/node_modules/
+avitrack-frontend/dist/
