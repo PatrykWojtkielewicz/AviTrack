@@ -40,6 +40,18 @@ public class AuthService
         return new AuthResponse(GenerateToken(user), user.Username);
     }
 
+    public async Task<AuthResponse?> Login(LoginRequest request)
+    {
+        var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == request.Email);
+
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHashed))
+        {
+            return null;
+        }
+
+        return new AuthResponse(GenerateToken(user), user.Username);
+    }
+
     private string GenerateToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));

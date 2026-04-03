@@ -5,3 +5,4 @@ avitrack-frontend/node_modules/
 avitrack-frontend/dist/
 
 avitrack-backend/*.db
+avitrack-backend/appsettings.json
