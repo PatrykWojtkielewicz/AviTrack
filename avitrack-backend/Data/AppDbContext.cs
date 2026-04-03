@@ -9,4 +9,6 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<TrackedAirport> TrackedAirports => Set<TrackedAirport>();
+    public DbSet<TrackedFlight> TrackedFlights => Set<TrackedFlight>();
+    public DbSet<TrackedAircraftType> TrackedAircraftTypes => Set<TrackedAircraftType>();
 }

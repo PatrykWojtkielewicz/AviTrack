@@ -13,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AirportService>();
+builder.Services.AddScoped<FlightService>();
+builder.Services.AddScoped<AircraftTypeService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => 
