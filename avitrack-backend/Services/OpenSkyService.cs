@@ -45,4 +45,38 @@ public class OpenSkyService
             Heading = state[10] is JsonElement hdg ? hdg.GetDouble() : null,
         };
     }
+
+    public async Task<FlightState?> GetFlightByCallsign(string callsign)
+    {
+        var response = await _http.GetStringAsync("https://opensky-network.org/api/states/all");
+        var data = JsonSerializer.Deserialize<OpenSkyResponse>(response, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (data?.States is null)
+            return null;
+
+        return data.States
+            .Select(ParseState)
+            .FirstOrDefault(s => s?.Callsign.Equals(callsign, StringComparison.OrdinalIgnoreCase) == true);
+    }
+
+    public async Task<List<FlightState>> GetFlightsByAircraftType(string icaoTypeCode)
+    {
+        var response = await _http.GetStringAsync("https://opensky-network.org/api/states/all");
+        var data = JsonSerializer.Deserialize<OpenSkyResponse>(response, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (data?.States is null)
+            return [];
+
+        return data.States
+            .Select(ParseState)
+            .Where(s => s is not null)
+            .Select(s => s!)
+            .ToList();
+    }
 }

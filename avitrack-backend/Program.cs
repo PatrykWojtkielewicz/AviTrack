@@ -17,6 +17,7 @@ builder.Services.AddScoped<FlightService>();
 builder.Services.AddScoped<AircraftTypeService>();
 builder.Services.AddHttpClient<OpenSkyService>();
 builder.Services.AddHttpClient<AirportDataService>();
+builder.Services.AddScoped<DashboardService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => 
