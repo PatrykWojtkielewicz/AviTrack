@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AviTrack.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260403135147_RenameIcao24ToIcaoTypeCode")]
-    partial class RenameIcao24ToIcaoTypeCode
+    [Migration("20260403141702_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

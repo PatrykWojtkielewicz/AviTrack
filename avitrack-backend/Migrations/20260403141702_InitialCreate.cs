@@ -6,11 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AviTrack.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class AddFlightsAndAircraftTypes : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    PasswordHashed = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "TrackedAircraftTypes",
                 columns: table => new
@@ -18,7 +33,7 @@ namespace AviTrack.Api.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Icao24 = table.Column<string>(type: "TEXT", nullable: false),
+                    IcaoTypeCode = table.Column<string>(type: "TEXT", nullable: false),
                     CustomLabel = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -27,6 +42,28 @@ namespace AviTrack.Api.Migrations
                     table.PrimaryKey("PK_TrackedAircraftTypes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_TrackedAircraftTypes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrackedAirports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IcaoCode = table.Column<string>(type: "TEXT", nullable: false),
+                    CustomLabel = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrackedAirports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TrackedAirports_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -61,6 +98,11 @@ namespace AviTrack.Api.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TrackedAirports_UserId",
+                table: "TrackedAirports",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TrackedFlights_UserId",
                 table: "TrackedFlights",
                 column: "UserId");
@@ -73,7 +115,13 @@ namespace AviTrack.Api.Migrations
                 name: "TrackedAircraftTypes");
 
             migrationBuilder.DropTable(
+                name: "TrackedAirports");
+
+            migrationBuilder.DropTable(
                 name: "TrackedFlights");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
