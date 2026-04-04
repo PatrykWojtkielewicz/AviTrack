@@ -1,11 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  standalone: false,
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  standalone: false
 })
 export class App {
-  protected readonly title = signal('avitrack-frontend');
+  title = 'avitrack-frontend';
 }
