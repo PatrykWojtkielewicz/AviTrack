@@ -22,6 +22,14 @@ public class FlightService
             .ToListAsync();
     }
 
+    public async Task<FlightResponse?> GetById(int userId, int flightId)
+    {
+        return await _db.TrackedFlights
+            .Where(f => f.Id == flightId && f.UserId == userId)
+            .Select(f => new FlightResponse(f.Id, f.Callsign, f.CustomLabel, f.CreatedAt))
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<FlightResponse> Add(int userId, AddFlightRequest request)
     {
         var flight = new TrackedFlight

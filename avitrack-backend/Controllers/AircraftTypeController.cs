@@ -28,6 +28,19 @@ public class AircraftTypesController : ControllerBase
         return Ok(types);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var type = await _aircraftTypeService.GetById(GetUserId(), id);
+
+        if (type is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(type);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Add(AddAircraftTypeRequest request)
     {

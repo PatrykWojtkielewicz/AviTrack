@@ -22,6 +22,14 @@ public class AircraftTypeService
             .ToListAsync();
     }
 
+    public async Task<AircraftTypeResponse?> GetById(int userId, int aircraftId)
+    {
+        return await _db.TrackedAircraftTypes
+            .Where(a => a.Id == aircraftId && a.UserId == userId)
+            .Select(a => new AircraftTypeResponse(a.Id, a.IcaoTypeCode, a.CustomLabel, a.CreatedAt))
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<AircraftTypeResponse> Add(int userId, AddAircraftTypeRequest request)
     {
         var aircraft = new TrackedAircraftType

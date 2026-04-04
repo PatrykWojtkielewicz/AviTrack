@@ -22,6 +22,14 @@ public class AirportService
             .ToListAsync();
     }
 
+    public async Task<AirportResponse?> GetById(int userId, int airportId)
+    {
+        return await _db.TrackedAirports
+            .Where(a => a.Id == airportId && a.UserId == userId)
+            .Select(a => new AirportResponse(a.Id, a.IcaoCode, a.CustomLabel, a.CreatedAt))
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<AirportResponse> Add(int userId, AddAirportRequest request)
     {
         var airport = new TrackedAirport

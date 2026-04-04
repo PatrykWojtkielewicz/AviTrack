@@ -17,7 +17,9 @@ POST   `/api/auth/login`
 
 **Lotniska**
 
-GET    `/api/airports`   
+GET    `/api/airports`  
+
+GET    `/api/airports/{id}`
 
 POST   `/api/airports`         
 
@@ -29,6 +31,8 @@ DELETE `/api/airports/{id}`
 
 GET    `/api/flights`
 
+GET    `/api/flights/{id}`
+
 POST   `/api/flights`
 
 DELETE `/api/flights/{id}`
@@ -36,6 +40,8 @@ DELETE `/api/flights/{id}`
 **Rodzaje samolotów**
 
 GET    `/api/aircraft-types`
+
+GET    `/api/aircraft-types/{id}`
 
 POST   `/api/aircraft-types`
 

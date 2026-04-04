@@ -28,6 +28,19 @@ public class AirportsController : ControllerBase
         return Ok(airports);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var airport = await _airportService.GetById(GetUserId(), id);
+
+        if (airport is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(airport);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Add(AddAirportRequest request)
     {
