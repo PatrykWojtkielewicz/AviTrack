@@ -8,9 +8,10 @@ import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@a
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { Login } from './features/auth/login/login';
 import { FormsModule } from '@angular/forms';
+import { Register } from './features/auth/register/register';
 
 @NgModule({
-  declarations: [App, Login],
+  declarations: [App, Login, Register],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [
     provideBrowserGlobalErrorListeners(),
