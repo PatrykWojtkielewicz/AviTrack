@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard.service';
+import { AirportService } from '../../core/services/airport.service';
+import { FlightService } from '../../core/services/flight.service';
+import { AircraftTypeService } from '../../core/services/aircraft-type.service';
 import { DashboardResponse } from '../../core/models/dashboard.model';
+
+type ModalType = 'airport' | 'flight' | 'aircraftType' | null;
 
 @Component({
   selector: 'app-dashboard',
@@ -13,18 +18,87 @@ export class Dashboard implements OnInit {
   loading = true;
   error = '';
 
-  constructor(private dashboardService: DashboardService) {}
+  activeModal: ModalType = null;
+  openDropdownId: string | null = null;
+
+  formIcao = '';
+  formCallsign = '';
+  formLabel = '';
+
+  constructor(
+    private dashboardService: DashboardService,
+    private airportService: AirportService,
+    private flightService: FlightService,
+    private aircraftTypeService: AircraftTypeService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
+    this.loadDashboard();
+  }
+
+  loadDashboard() {
+    this.loading = true;
     this.dashboardService.getDashboard().subscribe({
       next: (res) => {
         this.data = res;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error = 'Nie udało się załadować danych';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  openModal(type: ModalType) {
+    this.activeModal = type;
+    this.formIcao = '';
+    this.formCallsign = '';
+    this.formLabel = '';
+  }
+
+  closeModal() {
+    this.activeModal = null;
+  }
+
+  toggleDropdown(id: string) {
+    this.openDropdownId = this.openDropdownId === id ? null : id;
+  }
+
+  submitModal() {
+    if (this.activeModal === 'airport') {
+      this.airportService.add(this.formIcao, this.formLabel).subscribe(() => {
+        this.closeModal();
+        this.loadDashboard();
+      });
+    } else if (this.activeModal === 'flight') {
+      this.flightService.add(this.formCallsign, this.formLabel).subscribe(() => {
+        this.closeModal();
+        this.loadDashboard();
+      });
+    } else if (this.activeModal === 'aircraftType') {
+      this.aircraftTypeService.add(this.formIcao, this.formLabel).subscribe(() => {
+        this.closeModal();
+        this.loadDashboard();
+      });
+    }
+  }
+
+  deleteAirport(id: number) {
+    this.airportService.delete(id).subscribe(() => this.loadDashboard());
+    this.openDropdownId = null;
+  }
+
+  deleteFlight(id: number) {
+    this.flightService.delete(id).subscribe(() => this.loadDashboard());
+    this.openDropdownId = null;
+  }
+
+  deleteAircraftType(id: number) {
+    this.aircraftTypeService.delete(id).subscribe(() => this.loadDashboard());
+    this.openDropdownId = null;
   }
 }
