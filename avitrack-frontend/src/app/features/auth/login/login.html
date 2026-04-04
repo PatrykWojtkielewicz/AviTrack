@@ -1,0 +1,38 @@
+<div class="min-h-screen bg-sky-100 flex items-center justify-center px-4">
+  <div class="bg-white p-8 rounded-2xl w-full max-w-md shadow-xl border border-sky-200">
+    <div class="mb-8 text-center">
+      <h1 class="text-sky-600 text-3xl font-bold tracking-wide">✈ AviTrack</h1>
+      <p class="text-sky-400 text-sm mt-1">Twój panel śledzenia lotów</p>
+    </div>
+    <form (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label class="text-sky-700 text-sm block mb-1">Email</label>
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          class="w-full bg-sky-50 text-sky-900 border border-sky-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
+        />
+      </div>
+      <div class="mb-6">
+        <label class="text-sky-700 text-sm block mb-1">Hasło</label>
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          class="w-full bg-sky-50 text-sky-900 border border-sky-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded-lg font-semibold transition-colors"
+      >
+        Zaloguj się
+      </button>
+    </form>
+    <p class="text-sky-500 text-sm mt-4 text-center">
+      Nie masz konta? <a routerLink="/register" class="text-sky-600 hover:underline font-medium">Zarejestruj się</a>
+    </p>
+    <p *ngIf="error" class="text-red-500 text-sm mt-3 text-center">{{ error }}</p>
+  </div>
+</div>
