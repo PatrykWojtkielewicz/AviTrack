@@ -9,9 +9,10 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { Login } from './features/auth/login/login';
 import { FormsModule } from '@angular/forms';
 import { Register } from './features/auth/register/register';
+import { Dashboard } from './features/dashboard/dashboard';
 
 @NgModule({
-  declarations: [App, Login, Register],
+  declarations: [App, Login, Register, Dashboard],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [
     provideBrowserGlobalErrorListeners(),
