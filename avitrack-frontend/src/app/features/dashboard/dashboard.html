@@ -1,1 +1,66 @@
-<p>dashboard works!</p>
+<app-navbar></app-navbar>
+
+<div class="min-h-screen bg-sky-50 px-6 py-8">
+  <div *ngIf="loading" class="text-sky-400 text-center mt-20 text-lg">Ładowanie danych...</div>
+  <div *ngIf="error" class="text-red-500 text-center mt-20">{{ error }}</div>
+
+  <div *ngIf="data && !loading">
+
+    <section class="mb-10">
+      <h2 class="text-sky-700 text-xl font-semibold mb-4">Śledzone lotniska</h2>
+      <div *ngIf="data.airports.length === 0" class="text-sky-400">Brak śledzonych lotnisk.</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div *ngFor="let airport of data.airports" class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sky-700 font-bold text-lg">{{ airport.icaoCode }}</span>
+            <span class="text-sky-400 text-sm">{{ airport.city }}, {{ airport.country }}</span>
+          </div>
+          <p class="text-sky-500 text-sm mb-3">{{ airport.customLabel }}</p>
+          <p class="text-sky-600 text-sm font-medium mb-2">Loty w pobliżu: {{ airport.nearbyFlights.length }}</p>
+          <div class="space-y-1">
+            <div *ngFor="let flight of airport.nearbyFlights.slice(0, 5)" class="text-xs text-sky-500 flex justify-between">
+              <span>{{ flight.callsign }}</span>
+              <span>{{ flight.altitude ? (flight.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-sky-700 text-xl font-semibold mb-4">Śledzone loty</h2>
+      <div *ngIf="data.flights.length === 0" class="text-sky-400">Brak śledzonych lotów.</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div *ngFor="let flight of data.flights" class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sky-700 font-bold text-lg">{{ flight.callsign }}</span>
+            <span class="text-sky-400 text-sm">{{ flight.customLabel }}</span>
+          </div>
+          <div *ngIf="flight.liveData; else noData">
+            <p class="text-sky-500 text-sm">Kraj: {{ flight.liveData.originCountry }}</p>
+            <p class="text-sky-500 text-sm">Wysokość: {{ flight.liveData.altitude ? (flight.liveData.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</p>
+            <p class="text-sky-500 text-sm">Prędkość: {{ flight.liveData.velocity ? (flight.liveData.velocity | number:'1.0-0') + ' km/h' : '-' }}</p>
+          </div>
+          <ng-template #noData>
+            <p class="text-sky-300 text-sm">Brak aktywnych danych</p>
+          </ng-template>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-sky-700 text-xl font-semibold mb-4">Śledzone typy samolotów</h2>
+      <div *ngIf="data.aircraftTypes.length === 0" class="text-sky-400">Brak śledzonych typów.</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div *ngFor="let type of data.aircraftTypes" class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sky-700 font-bold text-lg">{{ type.icaoTypeCode }}</span>
+            <span class="text-sky-400 text-sm">{{ type.customLabel }}</span>
+          </div>
+          <p class="text-sky-600 text-sm font-medium">Aktywne loty: {{ type.liveFlights.length }}</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
