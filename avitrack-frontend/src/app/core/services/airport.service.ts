@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AirportService {
-  private apiUrl = 'http://localhost:5251/api/airports';
+  private apiUrl = '/api/airports';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { DashboardResponse } from '../models/dashboard.model';
     providedIn: 'root'
 })
 export class DashboardService {
-    private apiUrl = 'http://localhost:5251/api/dashboard';
+    private apiUrl = '/api/dashboard';
 
     constructor(private http: HttpClient) {}
 
