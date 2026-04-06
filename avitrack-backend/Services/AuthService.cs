@@ -22,6 +22,13 @@ public class AuthService
 
     public async Task<AuthResponse?> Register(RegisterRequest request)
     {
+        if (request.Password.Length < 8 ||
+        !request.Password.Any(char.IsUpper) ||
+        !request.Password.Any(char.IsDigit))
+        {
+            return null;
+        }
+
         if (await _db.Users.AnyAsync(u => u.Email == request.Email))
         {
             return null;
