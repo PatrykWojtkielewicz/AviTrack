@@ -22,39 +22,12 @@ public class AirportService
             .ToListAsync();
     }
 
-    public async Task<DashboardAirport?> GetById(int userId, int airportId)
+    public async Task<AirportResponse?> GetById(int userId, int airportId)
     {
-        var airport = await _db.TrackedAirports
-            .FirstOrDefaultAsync(a => a.Id == airportId && a.UserId == userId);
-
-        if (airport is null)
-            return null;
-
-        var info = await _airportData.GetByIcao(airport.IcaoCode);
-        var result = new DashboardAirport
-        {
-            Id = airport.Id,
-            IcaoCode = airport.IcaoCode,
-            CustomLabel = airport.CustomLabel,
-            Name = info?.Name ?? airport.IcaoCode,
-            City = info?.City ?? string.Empty,
-            Country = info?.Country ?? string.Empty,
-            Latitude = info?.Latitude,
-            Longitude = info?.Longitude
-        };
-
-        if (info is not null)
-        {
-            var delta = 1.0;
-            result.NearbyFlights = await _openSky.GetFlightsInArea(
-                info.Latitude - delta,
-                info.Longitude - delta,
-                info.Latitude + delta,
-                info.Longitude + delta
-            );
-        }
-
-        return result;
+        return await _db.TrackedAirports
+            .Where(a => a.Id == airportId && a.UserId == userId)
+            .Select(a => new AirportResponse(a.Id, a.IcaoCode, a.CustomLabel, a.CreatedAt))
+            .FirstOrDefaultAsync();
     }
 
     public async Task<AirportResponse> Add(int userId, AddAirportRequest request)

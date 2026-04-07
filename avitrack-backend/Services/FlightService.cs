@@ -8,10 +8,12 @@ namespace AviTrack.Api.Services;
 public class FlightService
 {
     private readonly AppDbContext _db;
+    private readonly OpenSkyService _openSky;
 
-    public FlightService(AppDbContext db)
+    public FlightService(AppDbContext db, OpenSkyService openSky)
     {
         _db = db;
+        _openSky = openSky;
     }
 
     public async Task<List<FlightResponse>> GetAll(int userId)
@@ -22,12 +24,25 @@ public class FlightService
             .ToListAsync();
     }
 
-    public async Task<FlightResponse?> GetById(int userId, int flightId)
+    public async Task<FlightDetailResponse?> GetById(int userId, int flightId)
     {
-        return await _db.TrackedFlights
+        var flight = await _db.TrackedFlights
             .Where(f => f.Id == flightId && f.UserId == userId)
-            .Select(f => new FlightResponse(f.Id, f.Callsign, f.CustomLabel, f.CreatedAt))
             .FirstOrDefaultAsync();
+
+        if (flight is null)
+            return null;
+
+        // Get live data from OpenSky
+        var liveData = await _openSky.GetFlightByCallsign(flight.Callsign);
+
+        return new FlightDetailResponse(
+            flight.Id,
+            flight.Callsign,
+            flight.CustomLabel,
+            flight.CreatedAt,
+            liveData
+        );
     }
 
     public async Task<FlightResponse> Add(int userId, AddFlightRequest request)
