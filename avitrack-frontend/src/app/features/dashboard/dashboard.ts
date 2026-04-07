@@ -3,6 +3,7 @@ import { DashboardService } from '../../core/services/dashboard.service';
 import { AirportService } from '../../core/services/airport.service';
 import { FlightService } from '../../core/services/flight.service';
 import { DashboardResponse } from '../../core/models/dashboard.model';
+import { Router } from '@angular/router';
 
 type ModalType = 'airport' | 'flight' | 'aircraftType' | null;
 
@@ -28,7 +29,8 @@ export class Dashboard implements OnInit {
     private dashboardService: DashboardService,
     private airportService: AirportService,
     private flightService: FlightService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -88,5 +90,9 @@ export class Dashboard implements OnInit {
   deleteFlight(id: number) {
     this.flightService.delete(id).subscribe(() => this.loadDashboard());
     this.openDropdownId = null;
+  }
+
+  viewFlightDetails(flightId: number) {
+    this.router.navigate(['/flights', flightId]);
   }
 }

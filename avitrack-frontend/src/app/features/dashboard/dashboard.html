@@ -59,7 +59,7 @@
       }
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @for (flight of data.flights; track flight.id) {
-          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5">
+          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5" (click)="viewFlightDetails(flight.id)" style="cursor: pointer;">
             <div class="flex items-center justify-between mb-2">
               <span class="text-sky-700 font-bold text-lg">{{ flight.callsign }}</span>
               <div class="flex items-center gap-3">
@@ -68,7 +68,7 @@
                   <button (click)="$event.stopPropagation(); toggleDropdown('flight-' + flight.id)" class="text-sky-400 hover:text-sky-600 px-1">•••</button>
                   @if (openDropdownId === 'flight-' + flight.id) {
                     <div class="absolute right-0 mt-1 bg-white border border-sky-100 rounded-xl shadow-md z-10 min-w-28">
-                      <button (click)="deleteFlight(flight.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl">Usuń</button>
+                      <button (click)="$event.stopPropagation(); deleteFlight(flight.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl">Usuń</button>
                     </div>
                   }
                 </div>

@@ -16,4 +16,8 @@ export class FlightService {
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  getById(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
 }
