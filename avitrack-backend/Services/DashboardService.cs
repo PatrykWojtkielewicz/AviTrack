@@ -29,10 +29,6 @@ public class DashboardService
             .Where(f => f.UserId == userId)
             .ToListAsync();
 
-        var trackedAircraftTypes = await _db.TrackedAircraftTypes
-            .Where(a => a.UserId == userId)
-            .ToListAsync();
-
         foreach (var airport in trackedAirports)
         {
             var info = await _airportData.GetByIcao(airport.IcaoCode);
@@ -71,18 +67,6 @@ public class DashboardService
                 Callsign = flight.Callsign,
                 CustomLabel = flight.CustomLabel,
                 LiveData = liveData
-            });
-        }
-
-        foreach (var type in trackedAircraftTypes)
-        {
-            var liveFlights = await _openSky.GetFlightsByAircraftType(type.IcaoTypeCode);
-            response.AircraftTypes.Add(new DashboardAircraftType
-            {
-                Id = type.Id,
-                IcaoTypeCode = type.IcaoTypeCode,
-                CustomLabel = type.CustomLabel,
-                LiveFlights = liveFlights
             });
         }
 

@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard.service';
 import { AirportService } from '../../core/services/airport.service';
 import { FlightService } from '../../core/services/flight.service';
-import { AircraftTypeService } from '../../core/services/aircraft-type.service';
 import { DashboardResponse } from '../../core/models/dashboard.model';
 
 type ModalType = 'airport' | 'flight' | 'aircraftType' | null;
@@ -29,7 +28,6 @@ export class Dashboard implements OnInit {
     private dashboardService: DashboardService,
     private airportService: AirportService,
     private flightService: FlightService,
-    private aircraftTypeService: AircraftTypeService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -79,11 +77,6 @@ export class Dashboard implements OnInit {
         this.closeModal();
         this.loadDashboard();
       });
-    } else if (this.activeModal === 'aircraftType') {
-      this.aircraftTypeService.add(this.formIcao, this.formLabel).subscribe(() => {
-        this.closeModal();
-        this.loadDashboard();
-      });
     }
   }
 
@@ -94,11 +87,6 @@ export class Dashboard implements OnInit {
 
   deleteFlight(id: number) {
     this.flightService.delete(id).subscribe(() => this.loadDashboard());
-    this.openDropdownId = null;
-  }
-
-  deleteAircraftType(id: number) {
-    this.aircraftTypeService.delete(id).subscribe(() => this.loadDashboard());
     this.openDropdownId = null;
   }
 }

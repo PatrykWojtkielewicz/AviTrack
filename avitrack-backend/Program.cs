@@ -14,7 +14,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AirportService>();
 builder.Services.AddScoped<FlightService>();
-builder.Services.AddScoped<AircraftTypeService>();
 builder.Services.AddHttpClient<OpenSkyService>();
 builder.Services.AddHttpClient<AirportDataService>();
 builder.Services.AddScoped<DashboardService>();

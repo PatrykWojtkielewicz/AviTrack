@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="min-h-screen bg-sky-50 py-8 flex justify-center" (click)="openDropdownId = null">
-  <div class="w-full max-w-[70%] px-6">
+  <div class="w-full sm:max-w-[90%] md:max-w-[70%] px-6">
   @if (loading) {
     <div class="text-sky-400 text-center mt-20 text-lg">Ładowanie danych...</div>
   }
@@ -75,43 +75,12 @@
               </div>
             </div>
             @if (flight.liveData) {
-              <p class="text-sky-500 text-sm">Kraj: {{ flight.liveData.originCountry }}</p>
+              <p class="text-sky-500 text-sm">Kraj pochodzenia: {{ flight.liveData.originCountry }}</p>
               <p class="text-sky-500 text-sm">Wysokość: {{ flight.liveData.altitude ? (flight.liveData.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</p>
-              <p class="text-sky-500 text-sm">Prędkość: {{ flight.liveData.velocity ? (flight.liveData.velocity | number:'1.0-0') + ' km/h' : '-' }}</p>
+              <p class="text-sky-500 text-sm">Prędkość: {{ flight.liveData.velocity ? (flight.liveData.velocity * 3.6 | number:'1.0-0') + ' km/h' : '-' }}</p>
             } @else {
               <p class="text-sky-300 text-sm">Brak aktywnych danych</p>
             }
-          </div>
-        }
-      </div>
-    </section>
-
-    <section class="mb-10">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sky-700 text-xl font-semibold">Śledzone typy samolotów</h2>
-        <button (click)="openModal('aircraftType')" class="text-sm bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-xl transition">+ Dodaj</button>
-      </div>
-      @if (data.aircraftTypes.length === 0) {
-        <div class="text-sky-400">Brak śledzonych typów.</div>
-      }
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        @for (type of data.aircraftTypes; track type.id) {
-          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sky-700 font-bold text-lg">{{ type.icaoTypeCode }}</span>
-              <div class="flex items-center gap-3">
-                <span class="text-sky-400 text-sm">{{ type.customLabel }}</span>
-                <div class="relative">
-                  <button (click)="$event.stopPropagation(); toggleDropdown('type-' + type.id)" class="text-sky-400 hover:text-sky-600 px-1">•••</button>
-                  @if (openDropdownId === 'type-' + type.id) {
-                    <div class="absolute right-0 mt-1 bg-white border border-sky-100 rounded-xl shadow-md z-10 min-w-28">
-                      <button (click)="deleteAircraftType(type.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-xl">Usuń</button>
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-            <p class="text-sky-600 text-sm font-medium">Aktywne loty: {{ type.liveFlights.length }}</p>
           </div>
         }
       </div>
@@ -130,11 +99,6 @@
           <h3 class="text-sky-700 font-semibold text-lg mb-4">Dodaj lot</h3>
           <input [(ngModel)]="formCallsign" placeholder="Callsign (np. LOT451)" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-3 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" />
           <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa - Londyn)" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-4 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" />
-        }
-        @if (activeModal === 'aircraftType') {
-          <h3 class="text-sky-700 font-semibold text-lg mb-4">Dodaj typ samolotu</h3>
-          <input [(ngModel)]="formIcao" placeholder="Kod ICAO typu (np. B738)" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-3 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" />
-          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Boeing 737-800)" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-4 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" />
         }
         <div class="flex justify-end gap-3">
           <button (click)="closeModal()" class="text-sky-400 hover:text-sky-600 px-4 py-2 text-sm">Anuluj</button>
