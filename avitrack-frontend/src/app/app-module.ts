@@ -11,9 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { Register } from './features/auth/register/register';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Navbar } from './shared/components/navbar/navbar';
+import { FlightDetail } from './features/flight-detail/flight-detail';
+import { AirportDetail } from './features/airport-detail/airport-detail';
 
 @NgModule({
-  declarations: [App, Login, Register, Dashboard, Navbar],
+  declarations: [App, Login, Register, Dashboard, Navbar, FlightDetail, AirportDetail],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [
     provideBrowserGlobalErrorListeners(),
