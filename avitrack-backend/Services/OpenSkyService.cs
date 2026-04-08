@@ -1,5 +1,7 @@
 using System.Text.Json;
+using System.Net;
 using AviTrack.Api.DTOs;
+using AviTrack.Api.Exceptions;
 
 namespace AviTrack.Api.Services;
 
@@ -15,8 +17,17 @@ public class OpenSkyService
     public async Task<List<FlightState>> GetFlightsInArea(double lamin, double lomin, double lamax, double lomax)
     {
         var url = $"https://opensky-network.org/api/states/all?lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
-        var response = await _http.GetStringAsync(url);
-        var data = JsonSerializer.Deserialize<OpenSkyResponse>(response, new JsonSerializerOptions
+
+        var response = await _http.GetAsync(url);
+
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+        {
+            throw new TooManyRequestsException();
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        var data = JsonSerializer.Deserialize<OpenSkyResponse>(json, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
@@ -24,7 +35,11 @@ public class OpenSkyService
         if (data?.States is null)
             return [];
 
-        return data.States.Select(ParseState).Where(s => s is not null).Select(s => s!).ToList();
+        return data.States
+            .Select(ParseState)
+            .Where(s => s is not null)
+            .Select(s => s!)
+            .ToList();
     }
 
     private FlightState? ParseState(List<object> state)

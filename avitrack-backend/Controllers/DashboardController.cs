@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AviTrack.Api.Services;
+using AviTrack.Api.Exceptions;
 
 namespace AviTrack.Api.Controllers;
 
@@ -23,7 +24,14 @@ public class DashboardController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var result = await _dashboardService.GetDashboard(GetUserId());
-        return Ok(result);
+        try
+        {
+            var result = await _dashboardService.GetDashboard(GetUserId());
+            return Ok(result);
+        }
+        catch (TooManyRequestsException)
+        {
+            return StatusCode(429);
+        }
     }
 }

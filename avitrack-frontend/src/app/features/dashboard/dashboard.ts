@@ -47,8 +47,13 @@ export class Dashboard implements OnInit {
         this.loading = false;
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.error = 'Nie udało się załadować danych';
+      error: (err) => {
+        if (err.status === 429) {
+          this.error = 'Limit zapytań API ze strony OpenSky Network został osiągnięty. Spróbuj ponownie później';
+        } else  {
+          this.error = 'Nie udało się załadować danych';
+        }
+
         this.loading = false;
         this.cdr.detectChanges();
       }
@@ -130,5 +135,9 @@ export class Dashboard implements OnInit {
 
   viewFlightDetails(flightId: number) {
     this.router.navigate(['/flights', flightId]);
+  }
+
+  viewAirportDetails(airportId: number) {
+    this.router.navigate(['/airports', airportId]);
   }
 }
