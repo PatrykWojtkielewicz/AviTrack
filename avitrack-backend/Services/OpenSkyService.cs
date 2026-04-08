@@ -1,5 +1,7 @@
+// Services/OpenSkyService.cs
 using System.Text.Json;
 using System.Net;
+using System.Net.Http.Headers;
 using AviTrack.Api.DTOs;
 using AviTrack.Api.Exceptions;
 
@@ -8,17 +10,22 @@ namespace AviTrack.Api.Services;
 public class OpenSkyService
 {
     private readonly HttpClient _http;
+    private readonly OpenSkyTokenService _tokenService;
 
-    public OpenSkyService(HttpClient http)
+    public OpenSkyService(HttpClient http, OpenSkyTokenService tokenService)
     {
         _http = http;
+        _tokenService = tokenService;
     }
 
     public async Task<List<FlightState>> GetFlightsInArea(double lamin, double lomin, double lamax, double lomax)
     {
         var url = $"https://opensky-network.org/api/states/all?lamin={lamin}&lomin={lomin}&lamax={lamax}&lomax={lomax}";
 
-        var response = await _http.GetAsync(url);
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        await AttachTokenAsync(request);
+
+        var response = await _http.SendAsync(request);
 
         if (response.StatusCode == HttpStatusCode.TooManyRequests)
         {
@@ -42,6 +49,59 @@ public class OpenSkyService
             .ToList();
     }
 
+    public async Task<FlightState?> GetFlightByCallsign(string callsign)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://opensky-network.org/api/states/all");
+        await AttachTokenAsync(request);
+
+        var response = await _http.SendAsync(request);
+        var json = await response.Content.ReadAsStringAsync();
+
+        var data = JsonSerializer.Deserialize<OpenSkyResponse>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (data?.States is null)
+            return null;
+
+        return data.States
+            .Select(ParseState)
+            .FirstOrDefault(s => s?.Callsign.Equals(callsign, StringComparison.OrdinalIgnoreCase) == true);
+    }
+
+    public async Task<List<FlightState>> GetFlightsByAircraftType(string icaoTypeCode)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "https://opensky-network.org/api/states/all");
+        await AttachTokenAsync(request);
+
+        var response = await _http.SendAsync(request);
+        var json = await response.Content.ReadAsStringAsync();
+
+        var data = JsonSerializer.Deserialize<OpenSkyResponse>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (data?.States is null)
+            return [];
+
+        return data.States
+            .Select(ParseState)
+            .Where(s => s is not null)
+            .Select(s => s!)
+            .ToList();
+    }
+
+    private async Task AttachTokenAsync(HttpRequestMessage request)
+    {
+        var token = await _tokenService.GetTokenAsync();
+        if (token is not null)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+    }
+
     private FlightState? ParseState(List<object> state)
     {
         if (state.Count < 9)
@@ -59,39 +119,5 @@ public class OpenSkyService
             Velocity = state[9] is JsonElement vel ? vel.GetDouble() : null,
             Heading = state[10] is JsonElement hdg ? hdg.GetDouble() : null,
         };
-    }
-
-    public async Task<FlightState?> GetFlightByCallsign(string callsign)
-    {
-        var response = await _http.GetStringAsync("https://opensky-network.org/api/states/all");
-        var data = JsonSerializer.Deserialize<OpenSkyResponse>(response, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        if (data?.States is null)
-            return null;
-
-        return data.States
-            .Select(ParseState)
-            .FirstOrDefault(s => s?.Callsign.Equals(callsign, StringComparison.OrdinalIgnoreCase) == true);
-    }
-
-    public async Task<List<FlightState>> GetFlightsByAircraftType(string icaoTypeCode)
-    {
-        var response = await _http.GetStringAsync("https://opensky-network.org/api/states/all");
-        var data = JsonSerializer.Deserialize<OpenSkyResponse>(response, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        if (data?.States is null)
-            return [];
-
-        return data.States
-            .Select(ParseState)
-            .Where(s => s is not null)
-            .Select(s => s!)
-            .ToList();
     }
 }

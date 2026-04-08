@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AviTrack.Api.Data;
 using AviTrack.Api.Services;
+using AviTrack.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AirportService>();
 builder.Services.AddScoped<FlightService>();
+
+var openSkySettings = builder.Configuration
+    .GetSection("OpenSky")
+    .Get<OpenSkySettings>() ?? new OpenSkySettings();
+
+builder.Services.AddSingleton(openSkySettings);
+builder.Services.AddSingleton<OpenSkyTokenService>();
+builder.Services.AddHttpClient<OpenSkyTokenService>();
 builder.Services.AddHttpClient<OpenSkyService>();
+
 builder.Services.AddHttpClient<AirportDataService>();
 builder.Services.AddScoped<DashboardService>();
 
@@ -39,8 +49,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors(options => 
 {
     options.AddPolicy("AllowAngular", policy =>
-        policy.WithOrigins("http://localhost:4200") //dev only
-        // policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:4200")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
