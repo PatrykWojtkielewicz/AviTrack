@@ -13,6 +13,10 @@ export class AirportService {
     return this.http.post(this.apiUrl, { icaoCode, customLabel });
   }
 
+  update(id: number, customLabel: string) {
+    return this.http.put(`${this.apiUrl}/${id}`, { customLabel });
+  }
+
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

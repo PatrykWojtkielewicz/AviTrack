@@ -13,6 +13,10 @@ export class FlightService {
     return this.http.post(this.apiUrl, { callsign, customLabel });
   }
 
+  update(id: number, customLabel: string) {
+    return this.http.put(`${this.apiUrl}/${id}`, { customLabel });
+  }
+
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

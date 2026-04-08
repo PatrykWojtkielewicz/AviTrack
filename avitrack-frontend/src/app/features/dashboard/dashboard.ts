@@ -20,6 +20,8 @@ export class Dashboard implements OnInit {
 
   activeModal: ModalType = null;
   openDropdownId: string | null = null;
+  editMode = false;
+  editingId: number | null = null;
 
   formIcao = '';
   formCallsign = '';
@@ -53,11 +55,31 @@ export class Dashboard implements OnInit {
     });
   }
 
-  openModal(type: ModalType) {
+    openModal(type: ModalType) {
     this.activeModal = type;
+    this.editMode = false;
+    this.editingId = null;
     this.formIcao = '';
     this.formCallsign = '';
     this.formLabel = '';
+  }
+
+  openEditAirportModal(airport: any) {
+    this.activeModal = 'airport';
+    this.editMode = true;
+    this.editingId = airport.id;
+    this.formIcao = airport.icaoCode;
+    this.formLabel = airport.customLabel;
+    this.openDropdownId = null;
+  }
+
+  openEditFlightModal(flight: any) {
+    this.activeModal = 'flight';
+    this.editMode = true;
+    this.editingId = flight.id;
+    this.formCallsign = flight.callsign;
+    this.formLabel = flight.customLabel;
+    this.openDropdownId = null;
   }
 
   closeModal() {
@@ -68,17 +90,31 @@ export class Dashboard implements OnInit {
     this.openDropdownId = this.openDropdownId === id ? null : id;
   }
 
-  submitModal() {
+    submitModal() {
     if (this.activeModal === 'airport') {
-      this.airportService.add(this.formIcao, this.formLabel).subscribe(() => {
-        this.closeModal();
-        this.loadDashboard();
-      });
+      if (this.editMode && this.editingId !== null) {
+        this.airportService.update(this.editingId, this.formLabel).subscribe(() => {
+          this.closeModal();
+          this.loadDashboard();
+        });
+      } else {
+        this.airportService.add(this.formIcao, this.formLabel).subscribe(() => {
+          this.closeModal();
+          this.loadDashboard();
+        });
+      }
     } else if (this.activeModal === 'flight') {
-      this.flightService.add(this.formCallsign, this.formLabel).subscribe(() => {
-        this.closeModal();
-        this.loadDashboard();
-      });
+      if (this.editMode && this.editingId !== null) {
+        this.flightService.update(this.editingId, this.formLabel).subscribe(() => {
+          this.closeModal();
+          this.loadDashboard();
+        });
+      } else {
+        this.flightService.add(this.formCallsign, this.formLabel).subscribe(() => {
+          this.closeModal();
+          this.loadDashboard();
+        });
+      }
     }
   }
 
