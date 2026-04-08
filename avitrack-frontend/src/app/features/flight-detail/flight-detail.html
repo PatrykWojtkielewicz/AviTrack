@@ -20,7 +20,13 @@
           <p class="text-sky-500 text-lg">{{ flight.customLabel }}</p>
         </div>
 
-        <div id="map" style="height: 400px;"></div>
+        <div class="mb-8">
+          <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Lokalizacja</h2>
+          <div 
+            #mapContainer 
+            class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 shadow-sm z-0">
+          </div>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Tracked Flight Information -->
