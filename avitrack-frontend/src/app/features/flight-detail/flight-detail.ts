@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlightService } from '../../core/services/flight.service';
 import { ChangeDetectorRef } from '@angular/core';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-flight-detail',
@@ -13,6 +14,7 @@ export class FlightDetail implements OnInit {
   flight: any = null;
   loading = true;
   error = '';
+  private map: L.Map | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +27,7 @@ export class FlightDetail implements OnInit {
     this.route.params.subscribe(params => {
       const flightId = params['id'];
       this.loadFlightDetails(flightId);
+      this.loadMap();
     });
   }
 
@@ -42,6 +45,13 @@ export class FlightDetail implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  loadMap() {
+    this.map = L.map('map').setView([52.237, 21.017], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
   }
 
   goBack() {
