@@ -60,7 +60,7 @@ export class Dashboard implements OnInit {
     });
   }
 
-    openModal(type: ModalType) {
+  openModal(type: ModalType) {
     this.activeModal = type;
     this.editMode = false;
     this.editingId = null;
@@ -95,7 +95,7 @@ export class Dashboard implements OnInit {
     this.openDropdownId = this.openDropdownId === id ? null : id;
   }
 
-    submitModal() {
+  submitModal() {
     if (this.activeModal === 'airport') {
       if (this.editMode && this.editingId !== null) {
         this.airportService.update(this.editingId, this.formLabel).subscribe(() => {

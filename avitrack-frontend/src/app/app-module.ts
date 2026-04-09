@@ -13,9 +13,10 @@ import { Dashboard } from './features/dashboard/dashboard';
 import { Navbar } from './shared/components/navbar/navbar';
 import { FlightDetail } from './features/flight-detail/flight-detail';
 import { AirportDetail } from './features/airport-detail/airport-detail';
+import { Footer } from './shared/components/footer/footer';
 
 @NgModule({
-  declarations: [App, Login, Register, Dashboard, Navbar, FlightDetail, AirportDetail],
+  declarations: [App, Login, Register, Dashboard, Navbar, FlightDetail, AirportDetail, Footer],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [
     provideBrowserGlobalErrorListeners(),

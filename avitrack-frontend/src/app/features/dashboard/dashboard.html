@@ -28,8 +28,8 @@
                   <button (click)="$event.stopPropagation(); toggleDropdown('airport-' + airport.id)" class="text-sky-400 hover:text-sky-600 px-1">•••</button>
                   @if (openDropdownId === 'airport-' + airport.id) {
                     <div class="absolute right-0 mt-1 bg-white border border-sky-100 rounded-xl shadow-md z-10 min-w-28">
-                      <button (click)="openEditAirportModal(airport)" class="w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-sky-50 rounded-t-xl">Edytuj</button>
-                      <button (click)="deleteAirport(airport.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-b-xl">Usuń</button>
+                      <button (click)="$event.stopPropagation(); openEditAirportModal(airport)" class="w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-sky-50 rounded-t-xl">Edytuj</button>
+                      <button (click)="$event.stopPropagation(); deleteAirport(airport.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-b-xl">Usuń</button>
                     </div>
                   }
                 </div>
@@ -111,3 +111,4 @@
   }
   </div>
 </div>
+<app-footer></app-footer>
