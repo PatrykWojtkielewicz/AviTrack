@@ -19,7 +19,7 @@
       }
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @for (airport of data.airports; track airport.id) {
-          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5"  (click)="viewFlightDetails(airport.id)" style="cursor: pointer;">
+          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5"  (click)="viewAirportDetails(airport.id)" style="cursor: pointer;">
             <div class="flex items-center justify-between mb-2">
               <span class="text-sky-700 font-bold text-lg">{{ airport.icaoCode }}</span>
               <div class="flex items-center gap-3">

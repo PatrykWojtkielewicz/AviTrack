@@ -14,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AirportService>();
+builder.Services.AddHttpClient<AirportDataService>();
 builder.Services.AddScoped<FlightService>();
 
 var openSkySettings = builder.Configuration

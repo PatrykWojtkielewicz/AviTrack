@@ -31,7 +31,7 @@ public class AirportsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var airport = await _airportService.GetById(GetUserId(), id);
+        var airport = await _airportService.GetDetailById(GetUserId(), id);
 
         if (airport is null)
         {

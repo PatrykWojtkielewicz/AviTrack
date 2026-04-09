@@ -1,0 +1,14 @@
+:host ::ng-deep .airport-marker {
+  background: none;
+  border: none;
+}
+
+:host ::ng-deep .plane-marker {
+  background: none;
+  border: none;
+}
+
+:host ::ng-deep .leaflet-popup-content {
+  margin: 0;
+  padding: 0;
+}

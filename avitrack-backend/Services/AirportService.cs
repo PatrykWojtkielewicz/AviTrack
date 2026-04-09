@@ -8,10 +8,14 @@ namespace AviTrack.Api.Services;
 public class AirportService
 {
     private readonly AppDbContext _db;
+    private readonly AirportDataService _airportData;
+    private readonly OpenSkyService _openSky;
 
-    public AirportService(AppDbContext db)
+    public AirportService(AppDbContext db, AirportDataService airportData, OpenSkyService openSky)
     {
         _db = db;
+        _airportData = airportData;
+        _openSky = openSky;
     }
 
     public async Task<List<AirportResponse>> GetAll(int userId)
@@ -28,6 +32,42 @@ public class AirportService
             .Where(a => a.Id == airportId && a.UserId == userId)
             .Select(a => new AirportResponse(a.Id, a.IcaoCode, a.CustomLabel, a.CreatedAt))
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<AirportDetailResponse?> GetDetailById(int userId, int airportId)
+    {
+        var airport = await _db.TrackedAirports
+            .Where(a => a.Id == airportId && a.UserId == userId)
+            .FirstOrDefaultAsync();
+
+        if (airport is null)
+            return null;
+
+        var airportInfo = await _airportData.GetByIcao(airport.IcaoCode);
+
+        if (airportInfo is null)
+            return null;
+
+        var delta = 1.0;
+        var nearbyFlights = await _openSky.GetFlightsInArea(
+            airportInfo.Latitude - delta,
+            airportInfo.Longitude - delta,
+            airportInfo.Latitude + delta,
+            airportInfo.Longitude + delta
+        );
+
+        return new AirportDetailResponse(
+            airport.Id,
+            airport.IcaoCode,
+            airport.CustomLabel,
+            airport.CreatedAt,
+            airportInfo.Name,
+            airportInfo.City,
+            airportInfo.Country,
+            airportInfo.Latitude,
+            airportInfo.Longitude,
+            nearbyFlights
+        );
     }
 
     public async Task<AirportResponse> Add(int userId, AddAirportRequest request)
