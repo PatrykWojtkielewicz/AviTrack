@@ -17,7 +17,7 @@ export class Register {
   rules = [
     { label: 'Minimum 8 znaków', met: false, check: (p: string) => p.length >= 8 },
     { label: 'Jedna wielka litera', met: false, check: (p: string) => /[A-Z]/.test(p) },
-    { label: 'Jedna cyfra',        met: false, check: (p: string) => /[0-9]/.test(p) },
+    { label: 'Jedna cyfra', met: false, check: (p: string) => /[0-9]/.test(p) },
   ];
 
   get passwordValid() {
@@ -38,7 +38,10 @@ export class Register {
 
     this.error = '';
     this.authService.register(this.username, this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: (res) => {
+        this.authService.setUsername(res.username);
+        this.router.navigate(['/dashboard']);
+      },
       error: (err) => {
         if (err.status === 0) {
           this.error = 'Nie udało połączyć się z serwerem. Spróbuj ponownie później';

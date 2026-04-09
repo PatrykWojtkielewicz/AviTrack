@@ -7,39 +7,43 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
     private apiUrl = '/api/auth';
+    private username: string | null = null;
 
     constructor(private http: HttpClient) {}
 
     register(username: string, email: string, password: string) {
-        return this.http.post<{ token: string, username: string}>(`${this.apiUrl}/register`, { username, email, password})
-            .pipe(tap(res => this.saveToken(res)));
+        return this.http.post<{ username: string }>(`${this.apiUrl}/register`, { username, email, password }, { withCredentials: true })
+            .pipe(tap(res => this.username = res.username));
     }
 
     login(email: string, password: string) {
-        return this.http.post<{ token: string, username: string }>(`${this.apiUrl}/login`, { email, password })
-            .pipe(tap(res => this.saveToken(res)));
-    }
-
-    private saveToken(res: { token: string, username: string}) {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('username', res.username);
+        return this.http.post<{ username: string }>(`${this.apiUrl}/login`, { email, password }, { withCredentials: true })
+            .pipe(tap(res => this.username = res.username));
     }
 
     logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-    }
-
-    getToken() {
-        return localStorage.getItem('token');
+        return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
+            .pipe(tap(() => {
+                this.username = null;
+                sessionStorage.removeItem('username');
+            }));
     }
     
     getUsername() {
-        return localStorage.getItem('username');
+        return this.username;
+    }
+
+    private loadUsername() {
+        this.username = sessionStorage.getItem('username');
     }
     
     isLoggedIn() {
-        return !!this.getToken();
+        return !!this.username;
+    }
+
+    setUsername(username: string) {
+        this.username = username;
+        sessionStorage.setItem('username', username);
     }
 
 }

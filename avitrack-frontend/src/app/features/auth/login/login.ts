@@ -19,7 +19,10 @@ export class Login {
     this.error = '';
 
     this.authService.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: (res) => {
+        this.authService.setUsername(res.username);
+        this.router.navigate(['/dashboard']);
+      },
       error: (err) => {
         if (err.status === 0) {
           this.error = 'Nie udało połączyć się z serwerem. Spróbuj ponownie później';

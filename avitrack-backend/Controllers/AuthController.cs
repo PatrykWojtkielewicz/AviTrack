@@ -25,7 +25,19 @@ public class AuthController : ControllerBase
             return Conflict("Email is already in use");
         }
 
-        return Ok(result);
+        Response.Cookies.Append(
+            "token",
+            result.Token,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,   // false on localhost
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            }
+        );
+
+        return Ok(new { username = result.Username });
     }
 
     [HttpPost("login")]
@@ -38,6 +50,25 @@ public class AuthController : ControllerBase
             return Conflict("Invalid credentials");
         }
 
-        return Ok(result);
+        Response.Cookies.Append(
+            "token",
+            result.Token,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            }
+        );
+
+        return Ok(new { username = result.Username });
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("token");
+        return Ok();
     }
 }
