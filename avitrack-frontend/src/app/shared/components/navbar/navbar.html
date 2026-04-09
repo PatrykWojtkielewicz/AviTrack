@@ -1,7 +1,12 @@
 <nav class="bg-white border-b border-sky-200 px-6 py-4 flex items-center justify-between shadow-sm">
   <span class="text-sky-600 text-xl font-bold tracking-wide">✈ AviTrack</span>
   <div class="flex items-center gap-4">
-    <span class="text-sky-500 text-sm">{{ username }}</span>
+    <button 
+      (click)="openUserSettings()"
+      class="text-sm text-sky-500 hover:text-sky-700 font-medium transition-colors"
+    >
+      {{ username }}
+    </button>
     <button
       (click)="logout()"
       class="text-sm text-sky-600 hover:text-sky-800 font-medium transition-colors"

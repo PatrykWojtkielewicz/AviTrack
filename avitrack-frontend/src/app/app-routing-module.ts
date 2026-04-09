@@ -5,6 +5,7 @@ import { Register } from './features/auth/register/register';
 import { Dashboard } from './features/dashboard/dashboard';
 import { FlightDetail } from './features/flight-detail/flight-detail';
 import { AirportDetail } from './features/airport-detail/airport-detail';
+import { User } from './features/user/user';
 
 const routes: Routes = [
   { path: 'login', component: Login },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'dashboard', component: Dashboard },
   { path: 'flights/:id', component: FlightDetail },
   { path: 'airports/:id', component: AirportDetail },
+  { path: 'user', component: User },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
