@@ -1,6 +1,6 @@
 # AviTrack
 
-A full-stack web application designed for tracking your favourite flights nad airports
+A full-stack web application designed for tracking your favourite flights and airports
 
 ## Tech stack
 
