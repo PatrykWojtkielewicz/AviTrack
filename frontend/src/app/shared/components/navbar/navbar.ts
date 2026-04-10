@@ -25,4 +25,8 @@ export class Navbar implements OnInit {
   openUserSettings() {
     this.router.navigate(['/user']);
   }
+
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
 }
