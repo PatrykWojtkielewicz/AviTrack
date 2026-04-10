@@ -41,7 +41,7 @@
               @for (flight of airport.nearbyFlights.slice(0, 5); track flight.icao24) {
                 <div class="text-xs text-sky-500 flex justify-between">
                   <span>{{ flight.callsign }}</span>
-                  <span>{{ flight.altitude ? (flight.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</span>
+                  <span>Wysokość: {{ flight.altitude ? (flight.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</span>
                 </div>
               }
             </div>
