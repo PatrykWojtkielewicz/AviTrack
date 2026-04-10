@@ -1,52 +1,70 @@
 # AviTrack
 
-Aplikacja służąca śledzeniu ulubionych lotów, lotnisk oraz rodzajów samolotów
+A full-stack web application designed for tracking your favourite flights nad airports
 
-## Narzędzia
+## Tech stack
 
-- Frontend: Angular 21.2.6, Tailwindcss
-- Backend: .NET 10.0.201 Core Web API, Entity Framework Core, SQLite
-- OpenSKy Network API
+| Layer | Technology |
+|---|---|
+| Frontend | Angular 21, Tailwind CSS |
+| Backend | .NET 10, ASP.NET Core Web API |
+| ORM | Entity Framework Core |
+| Database | SQLite |
+| External API | OpenSky Network |
 
-## Endpointy do API
-**Autentykacja**
+## Prerequisites
 
-POST   `/api/auth/register`
+- .NET SDK 10.0.201
+- Node.js + npm
+- [OpenSky Network](https://opensky-network.org/) account with API credentials
 
-POST   `/api/auth/login`
+## Getting started
 
-**Lotniska**
+### 1. Clone the repository
 
-GET    `/api/airports`  
+```bash
+git clone https://github.com/PatrykWojtkielewicz/AviTrack.git
+cd AviTrack
+```
 
-GET    `/api/airports/{id}`
+### 2. Configure secrets:
 
-POST   `/api/airports`         
+ 
+Copy the example config file:
+ 
+```bash
+cp backend/appsettings.json backend/appsettings.Development.json
+```
+ 
+Then open `backend/appsettings.Development.json` and fill in your values:
+ 
+```json
+{
+  "Jwt": {
+    "Key": "YOUR_JWT_SECRET_KEY_MIN_32_CHARACTERS"
+  },
+  "OpenSky": {
+    "ClientId": "YOUR_OPENSKY_CLIENT_ID",
+    "ClientSecret": "YOUR_OPENSKY_CLIENT_SECRET"
+  }
+}
+```
+ 
+- **Jwt.Key** — any random string, at least 32 characters long
+- **OpenSky.ClientId / ClientSecret** — obtained from your OpenSky Network account
 
-PUT    `/api/airports/{id}`
+### 3. Run the backend
 
-DELETE `/api/airports/{id}`
+```bash
+cd backend
+dotnet restore
+dotnet run
+```
 
-**Loty**
+### 4. Run the frontend
 
-GET    `/api/flights`
-
-GET    `/api/flights/{id}`
-
-POST   `/api/flights`
-
-DELETE `/api/flights/{id}`
-
-**Rodzaje samolotów**
-
-GET    `/api/aircraft-types`
-
-GET    `/api/aircraft-types/{id}`
-
-POST   `/api/aircraft-types`
-
-DELETE `/api/aircraft-types/{id}`
-
-**Strona główna**
-
-GET    `/api/dashboard`
+```bash
+cd frontend
+npm install
+npm start
+```
