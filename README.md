@@ -1,9 +1,6 @@
 # AviTrack
-
 A full-stack web application designed for tracking your favourite flights and airports
-
 ## Tech stack
-
 | Layer | Technology |
 |---|---|
 | Frontend | Angular 21, Tailwind CSS |
@@ -12,23 +9,51 @@ A full-stack web application designed for tracking your favourite flights and ai
 | Database | SQLite |
 | External API | OpenSky Network |
 
-## Prerequisites
+## Running with Docker (recommended)
 
-- .NET SDK 10.0.201
-- Node.js + npm
-- [OpenSky Network](https://opensky-network.org/) account with API credentials
+### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/)
 
-## Getting started
+### Steps
 
-### 1. Clone the repository
-
+**1. Clone the repository**
 ```bash
 git clone https://github.com/PatrykWojtkielewicz/AviTrack.git
 cd AviTrack
 ```
 
-### 2. Configure secrets:
+**2. Configure secrets**
+```bash
+cp .env.example .env
+```
+Open `.env` and fill in your values:
+```
+JWT_KEY=your-jwt-secret-min-32-characters
+OPENSKY_CLIENT_ID=your-opensky-client-id
+OPENSKY_CLIENT_SECRET=your-opensky-client-secret
+```
 
+**3. Run**
+```bash
+docker compose up --build
+```
+The app will be available at `http://localhost`.
+
+---
+
+## Running locally (development)
+
+### Prerequisites
+- .NET SDK 10.0.201
+- Node.js + npm
+- [OpenSky Network](https://opensky-network.org/) account with API credentials
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/PatrykWojtkielewicz/AviTrack.git
+cd AviTrack
+```
+### 2. Configure secrets:
  
 Copy the example config file:
  
@@ -54,15 +79,12 @@ Then open `backend/appsettings.Development.json` and fill in your values:
 - **OpenSky.ClientId / ClientSecret** — obtained from your OpenSky Network account
 
 ### 3. Run the backend
-
 ```bash
 cd backend
 dotnet restore
 dotnet run
 ```
-
 ### 4. Run the frontend
-
 ```bash
 cd frontend
 npm install
