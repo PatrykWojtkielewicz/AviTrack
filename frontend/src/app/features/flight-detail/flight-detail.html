@@ -20,40 +20,38 @@
           <p class="text-sky-500 dark:text-sky-400 text-lg">{{ flight.customLabel }}</p>
         </div>
 
-        <div class="mb-8">
-          <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Lokalizacja</h2>
-          <div
-            #mapContainer
-            class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 dark:border-slate-700 shadow-sm z-0">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <!-- Tracked Flight Information -->
-          <div>
-            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Informacje o śledzonym locie</h2>
-            <div class="space-y-3">
-              <div>
-                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">ID</p>
-                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.id }}</p>
-              </div>
-              <div>
-                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Callsign</p>
-                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.callsign }}</p>
-              </div>
-              <div>
-                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Etykieta</p>
-                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.customLabel }}</p>
-              </div>
-              <div>
-                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Utworzono</p>
-                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
-              </div>
+        @if (flight.liveData) {
+          <div class="mb-8">
+            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Lokalizacja</h2>
+            <div
+              #mapContainer
+              class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 dark:border-slate-700 shadow-sm z-0">
             </div>
           </div>
 
-          <!-- Live Flight Data -->
-          @if (flight.liveData) {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Informacje o śledzonym locie</h2>
+              <div class="space-y-3">
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">ID</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.id }}</p>
+                </div>
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Callsign</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.callsign }}</p>
+                </div>
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Etykieta</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.customLabel }}</p>
+                </div>
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Utworzono</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
+                </div>
+              </div>
+            </div>
+
             <div>
               <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Dane na żywo</h2>
               <div class="space-y-3">
@@ -87,13 +85,32 @@
                 </div>
               </div>
             </div>
-          } @else {
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 gap-8">
             <div>
-              <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Dane na żywo</h2>
-              <p class="text-sky-300 dark:text-sky-600 text-sm">Brak aktywnych danych dla tego lotu</p>
+              <h2 class="text-red-600 dark:text-red-00 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Brak informacji na żywo</h2>
+              <div class="space-y-3">
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">ID</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.id }}</p>
+                </div>
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Callsign</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.callsign }}</p>
+                </div>
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Etykieta</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.customLabel }}</p>
+                </div>
+                <div>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Utworzono</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
+                </div>
+              </div>
             </div>
-          }
-        </div>
+          </div>
+        }
 
         @if (flight.liveData) {
           <div class="mt-8 pt-8 border-t border-sky-200 dark:border-slate-700">
