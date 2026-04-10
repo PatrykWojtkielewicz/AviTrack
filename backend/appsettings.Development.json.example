@@ -1,0 +1,9 @@
+{
+  "Jwt": {
+    "Key": "REPLACE_WITH_LONG_RANDOM_STRING_32_CHARS_MIN"
+  },
+  "OpenSky": {
+    "ClientId": "REPLACE_WITH_YOUR_CLIENT_ID",
+    "ClientSecret": "REPLACE_WITH_YOUR_CLIENT_SECRET"
+  }
+}
