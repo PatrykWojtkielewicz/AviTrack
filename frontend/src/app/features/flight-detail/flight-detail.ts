@@ -65,6 +65,8 @@ private initMap(container: HTMLElement) {
     attribution: '© OpenStreetMap contributors'
   }).addTo(this.map);
 
+  this.map.scrollWheelZoom.disable();
+
   const planeIcon = L.divIcon({
     html: `
       <div style="

@@ -64,6 +64,8 @@ export class AirportDetail implements OnInit {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
+    this.map.scrollWheelZoom.disable();
+
     const airportIcon = L.divIcon({
       html: `
         <div style="
