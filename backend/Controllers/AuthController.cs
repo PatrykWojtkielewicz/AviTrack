@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using AviTrack.Api.DTOs;
 using AviTrack.Api.Services;
+using System.Security.Claims;
 
 namespace AviTrack.Api.Controllers;
 
@@ -70,5 +72,25 @@ public class AuthController : ControllerBase
     {
         Response.Cookies.Delete("token");
         return Ok();
+    }
+
+    [Authorize]
+    [HttpPut("username")]
+    public async Task<IActionResult> UpdateUsername(UpdateUsernameRequest request)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var result = await _authService.UpdateUsername(userId, request);
+
+        if (result is null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(new { username = result.Username });
     }
 }

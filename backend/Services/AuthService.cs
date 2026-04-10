@@ -59,6 +59,22 @@ public class AuthService
         return new AuthResponse(GenerateToken(user), user.Username);
     }
 
+    public async Task<AuthResponse?> UpdateUsername(int userId, UpdateUsernameRequest request)
+    {
+        var user = await _db.Users.FindAsync(userId);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        user.Username = request.Username;
+        _db.Users.Update(user);
+        await _db.SaveChangesAsync();
+
+        return new AuthResponse(GenerateToken(user), user.Username);
+    }
+
     private string GenerateToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));

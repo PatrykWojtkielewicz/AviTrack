@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
@@ -19,7 +19,8 @@ export class User implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -38,11 +39,18 @@ export class User implements OnInit {
 
     const newUsername = this.form.get('username')?.value;
 
-    // TODO: Add API call to update username on backend
-    // For now, just update locally
-    this.authService.setUsername(newUsername);
-    this.success = 'Nazwa użytkownika zaktualizowana pomyślnie';
-    this.loading = false;
+    this.authService.updateUsername(newUsername).subscribe({
+      next: () => {
+        this.success = 'Nazwa użytkownika zaktualizowana pomyślnie';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.error = 'Nie udało się zaktualizować nazwy użytkownika';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   goBack() {
