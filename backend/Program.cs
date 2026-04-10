@@ -26,7 +26,6 @@ builder.Services.AddSingleton<OpenSkyTokenService>();
 builder.Services.AddHttpClient<OpenSkyTokenService>();
 builder.Services.AddHttpClient<OpenSkyService>();
 
-builder.Services.AddHttpClient<AirportDataService>();
 builder.Services.AddScoped<DashboardService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
