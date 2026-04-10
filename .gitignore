@@ -1,8 +1,14 @@
-backend/bin/
-backend/obj/
+.vscode/
 
+frontend/.angular/
 frontend/node_modules/
 frontend/dist/
 
+backend/logs/
+backend/*.logs
+backend/bin/
+backend/obj/
+
+backend/appsettings.*.json
+!backend/appsettings.json
 backend/*.db*
-backend/appsettings.Development.json
