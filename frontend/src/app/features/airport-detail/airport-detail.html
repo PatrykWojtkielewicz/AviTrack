@@ -1,70 +1,70 @@
 <app-navbar></app-navbar>
-<div class="min-h-screen bg-sky-50 py-8 flex justify-center">
+<div class="min-h-screen bg-sky-50 dark:bg-slate-900 py-8 flex justify-center transition-colors">
   <div class="w-full sm:max-w-[90%] md:max-w-[70%] px-6">
-    <button (click)="goBack()" class="text-sky-500 hover:text-sky-700 mb-6 flex items-center gap-2 transition">
+    <button (click)="goBack()" class="text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 mb-6 flex items-center gap-2 transition">
       ← Powrót do dashboardu
     </button>
 
     @if (loading) {
-      <div class="text-sky-400 text-center mt-20 text-lg">Ładowanie szczegółów lotniska...</div>
+      <div class="text-sky-400 dark:text-sky-500 text-center mt-20 text-lg">Ładowanie szczegółów lotniska...</div>
     }
 
     @if (error) {
-      <div class="text-red-500 text-center mt-20 bg-red-50 border border-red-200 rounded-xl p-4">{{ error }}</div>
+      <div class="text-red-500 dark:text-red-400 text-center mt-20 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">{{ error }}</div>
     }
 
     @if (!loading && airport) {
-      <div class="bg-white rounded-2xl shadow-md border border-sky-100 p-8 mb-6">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-sky-100 dark:border-slate-700 p-8 mb-6 transition-colors">
         <div class="mb-8">
-          <h1 class="text-sky-700 text-4xl font-bold mb-2">{{ airport.icaoCode }}</h1>
-          <p class="text-sky-500 text-lg">{{ airport.customLabel }}</p>
+          <h1 class="text-sky-700 dark:text-sky-300 text-4xl font-bold mb-2">{{ airport.icaoCode }}</h1>
+          <p class="text-sky-500 dark:text-sky-400 text-lg">{{ airport.customLabel }}</p>
         </div>
 
         <div class="mb-8">
-          <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Lokalizacja</h2>
-          <div 
-            #mapContainer 
-            class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 shadow-sm z-0">
+          <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Lokalizacja</h2>
+          <div
+            #mapContainer
+            class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 dark:border-slate-700 shadow-sm z-0">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Informacje o lotnisku</h2>
+            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Informacje o lotnisku</h2>
             <div class="space-y-3">
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">ID</p>
-                <p class="text-sky-700 font-semibold">{{ airport.id }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">ID</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ airport.id }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Kod ICAO</p>
-                <p class="text-sky-700 font-semibold">{{ airport.icaoCode }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Kod ICAO</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ airport.icaoCode }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Nazwa</p>
-                <p class="text-sky-700 font-semibold">{{ airport.name }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Nazwa</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ airport.name }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Miasto</p>
-                <p class="text-sky-700 font-semibold">{{ airport.city }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Miasto</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ airport.city }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Kraj</p>
-                <p class="text-sky-700 font-semibold">{{ airport.country }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Kraj</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ airport.country }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Etykieta</p>
-                <p class="text-sky-700 font-semibold">{{ airport.customLabel }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Etykieta</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ airport.customLabel }}</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Współrzędne</h2>
+            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Współrzędne</h2>
             <div class="space-y-3">
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Szerokość geograficzna</p>
-                <p class="text-sky-700 font-semibold font-mono text-sm">
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Szerokość geograficzna</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold font-mono text-sm">
                   @if (airport.latitude !== null) {
                     {{ airport.latitude | number:'1.0-6' }}
                   } @else {
@@ -73,8 +73,8 @@
                 </p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Długość geograficzna</p>
-                <p class="text-sky-700 font-semibold font-mono text-sm">
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Długość geograficzna</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold font-mono text-sm">
                   @if (airport.longitude !== null) {
                     {{ airport.longitude | number:'1.0-6' }}
                   } @else {
@@ -87,19 +87,19 @@
         </div>
 
         @if (airport.nearbyFlights && airport.nearbyFlights.length > 0) {
-          <div class="mt-8 pt-8 border-t border-sky-200">
-            <h2 class="text-sky-600 font-semibold text-lg mb-4">Loty w pobliżu ({{ airport.nearbyFlights.length }})</h2>
+          <div class="mt-8 pt-8 border-t border-sky-200 dark:border-slate-700">
+            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4">Loty w pobliżu ({{ airport.nearbyFlights.length }})</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               @for (flight of airport.nearbyFlights; track flight.icao24) {
-                <div class="bg-sky-50 rounded-xl p-4 border border-sky-200">
-                  <p class="text-sky-700 font-bold text-lg">{{ flight.callsign }}</p>
-                  <div class="text-sm text-sky-600 space-y-1 mt-2">
+                <div class="bg-sky-50 dark:bg-slate-700 rounded-xl p-4 border border-sky-200 dark:border-slate-600 transition-colors">
+                  <p class="text-sky-700 dark:text-sky-300 font-bold text-lg">{{ flight.callsign }}</p>
+                  <div class="text-sm text-sky-600 dark:text-sky-400 space-y-1 mt-2">
                     <p>
                       Status:
                       @if (flight.onGround) {
-                        <span class="text-orange-500">Na ziemi</span>
+                        <span class="text-orange-500 dark:text-orange-400">Na ziemi</span>
                       } @else {
-                        <span class="text-green-500">W powietrzu</span>
+                        <span class="text-green-500 dark:text-green-400">W powietrzu</span>
                       }
                     </p>
                     @if (flight.altitude !== null) {
@@ -114,8 +114,8 @@
             </div>
           </div>
         } @else {
-          <div class="mt-8 pt-8 border-t border-sky-200">
-            <p class="text-sky-300 text-sm">Brak lotów w pobliżu tego lotniska</p>
+          <div class="mt-8 pt-8 border-t border-sky-200 dark:border-slate-700">
+            <p class="text-sky-300 dark:text-sky-600 text-sm">Brak lotów w pobliżu tego lotniska</p>
           </div>
         }
       </div>

@@ -1,45 +1,45 @@
 <app-navbar></app-navbar>
-<div class="min-h-screen bg-sky-50 py-8 flex justify-center" (click)="openDropdownId = null">
+<div class="min-h-screen bg-sky-50 dark:bg-slate-900 py-8 flex justify-center transition-colors" (click)="openDropdownId = null">
   <div class="w-full sm:max-w-[90%] md:max-w-[70%] px-6">
   @if (loading) {
-    <div class="text-sky-400 text-center mt-20 text-lg">Ładowanie danych...</div>
+    <div class="text-sky-400 dark:text-sky-500 text-center mt-20 text-lg">Ładowanie danych...</div>
   }
   @if (error) {
-    <div class="text-red-500 text-center mt-20">{{ error }}</div>
+    <div class="text-red-500 dark:text-red-400 text-center mt-20">{{ error }}</div>
   }
 
   @if (!loading && data) {
     <section class="mb-10">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sky-700 text-xl font-semibold">Śledzone lotniska</h2>
-        <button (click)="openModal('airport')" class="text-sm bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-xl transition">+ Dodaj</button>
+        <h2 class="text-sky-700 dark:text-sky-300 text-xl font-semibold">Śledzone lotniska</h2>
+        <button (click)="openModal('airport')" class="text-sm bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white px-4 py-1.5 rounded-xl transition">+ Dodaj</button>
       </div>
       @if (data.airports.length === 0) {
-        <div class="text-sky-400">Brak śledzonych lotnisk.</div>
+        <div class="text-sky-400 dark:text-sky-500">Brak śledzonych lotnisk.</div>
       }
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @for (airport of data.airports; track airport.id) {
-          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5"  (click)="viewAirportDetails(airport.id)" style="cursor: pointer;">
+          <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-sky-100 dark:border-slate-700 p-5 transition-colors"  (click)="viewAirportDetails(airport.id)" style="cursor: pointer;">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-sky-700 font-bold text-lg">{{ airport.icaoCode }}</span>
+              <span class="text-sky-700 dark:text-sky-300 font-bold text-lg">{{ airport.icaoCode }}</span>
               <div class="flex items-center gap-3">
-                <span class="text-sky-400 text-sm">{{ airport.city }}, {{ airport.country }}</span>
+                <span class="text-sky-400 dark:text-sky-500 text-sm">{{ airport.city }}, {{ airport.country }}</span>
                 <div class="relative">
-                  <button (click)="$event.stopPropagation(); toggleDropdown('airport-' + airport.id)" class="text-sky-400 hover:text-sky-600 px-1">•••</button>
+                  <button (click)="$event.stopPropagation(); toggleDropdown('airport-' + airport.id)" class="text-sky-400 dark:text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 px-1">•••</button>
                   @if (openDropdownId === 'airport-' + airport.id) {
-                    <div class="absolute right-0 mt-1 bg-white border border-sky-100 rounded-xl shadow-md z-10 min-w-28">
-                      <button (click)="$event.stopPropagation(); openEditAirportModal(airport)" class="w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-sky-50 rounded-t-xl">Edytuj</button>
-                      <button (click)="$event.stopPropagation(); deleteAirport(airport.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-b-xl">Usuń</button>
+                    <div class="absolute right-0 mt-1 bg-white dark:bg-slate-800 border border-sky-100 dark:border-slate-700 rounded-xl shadow-md z-10 min-w-28">
+                      <button (click)="$event.stopPropagation(); openEditAirportModal(airport)" class="w-full text-left px-4 py-2 text-sm text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-slate-700 rounded-t-xl">Edytuj</button>
+                      <button (click)="$event.stopPropagation(); deleteAirport(airport.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-b-xl">Usuń</button>
                     </div>
                   }
                 </div>
               </div>
             </div>
-            <p class="text-sky-500 text-sm mb-3">{{ airport.customLabel }}</p>
-            <p class="text-sky-600 text-sm font-medium mb-2">Loty w pobliżu: {{ airport.nearbyFlights.length }}</p>
+            <p class="text-sky-500 dark:text-sky-400 text-sm mb-3">{{ airport.customLabel }}</p>
+            <p class="text-sky-600 dark:text-sky-400 text-sm font-medium mb-2">Loty w pobliżu: {{ airport.nearbyFlights.length }}</p>
             <div class="space-y-1">
               @for (flight of airport.nearbyFlights.slice(0, 5); track flight.icao24) {
-                <div class="text-xs text-sky-500 flex justify-between">
+                <div class="text-xs text-sky-500 dark:text-sky-400 flex justify-between">
                   <span>{{ flight.callsign }}</span>
                   <span>Wysokość: {{ flight.altitude ? (flight.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</span>
                 </div>
@@ -52,36 +52,36 @@
 
     <section class="mb-10">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sky-700 text-xl font-semibold">Śledzone loty</h2>
-        <button (click)="openModal('flight')" class="text-sm bg-sky-500 hover:bg-sky-600 text-white px-4 py-1.5 rounded-xl transition">+ Dodaj</button>
+        <h2 class="text-sky-700 dark:text-sky-300 text-xl font-semibold">Śledzone loty</h2>
+        <button (click)="openModal('flight')" class="text-sm bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white px-4 py-1.5 rounded-xl transition">+ Dodaj</button>
       </div>
       @if (data.flights.length === 0) {
-        <div class="text-sky-400">Brak śledzonych lotów.</div>
+        <div class="text-sky-400 dark:text-sky-500">Brak śledzonych lotów.</div>
       }
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @for (flight of data.flights; track flight.id) {
-          <div class="bg-white rounded-2xl shadow-sm border border-sky-100 p-5" (click)="viewFlightDetails(flight.id)" style="cursor: pointer;">
+          <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-sky-100 dark:border-slate-700 p-5 transition-colors" (click)="viewFlightDetails(flight.id)" style="cursor: pointer;">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-sky-700 font-bold text-lg">{{ flight.callsign }}</span>
+              <span class="text-sky-700 dark:text-sky-300 font-bold text-lg">{{ flight.callsign }}</span>
               <div class="flex items-center gap-3">
-                <span class="text-sky-400 text-sm">{{ flight.customLabel }}</span>
+                <span class="text-sky-400 dark:text-sky-500 text-sm">{{ flight.customLabel }}</span>
                 <div class="relative">
-                  <button (click)="$event.stopPropagation(); toggleDropdown('flight-' + flight.id)" class="text-sky-400 hover:text-sky-600 px-1">•••</button>
+                  <button (click)="$event.stopPropagation(); toggleDropdown('flight-' + flight.id)" class="text-sky-400 dark:text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 px-1">•••</button>
                   @if (openDropdownId === 'flight-' + flight.id) {
-                    <div class="absolute right-0 mt-1 bg-white border border-sky-100 rounded-xl shadow-md z-10 min-w-28">
-                      <button (click)="$event.stopPropagation(); openEditFlightModal(flight)" class="w-full text-left px-4 py-2 text-sm text-sky-600 hover:bg-sky-50 rounded-t-xl">Edytuj</button>
-                      <button (click)="$event.stopPropagation(); deleteFlight(flight.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-b-xl">Usuń</button>
+                    <div class="absolute right-0 mt-1 bg-white dark:bg-slate-800 border border-sky-100 dark:border-slate-700 rounded-xl shadow-md z-10 min-w-28">
+                      <button (click)="$event.stopPropagation(); openEditFlightModal(flight)" class="w-full text-left px-4 py-2 text-sm text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-slate-700 rounded-t-xl">Edytuj</button>
+                      <button (click)="$event.stopPropagation(); deleteFlight(flight.id)" class="w-full text-left px-4 py-2 text-sm text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-b-xl">Usuń</button>
                     </div>
                   }
                 </div>
               </div>
             </div>
             @if (flight.liveData) {
-              <p class="text-sky-500 text-sm">Kraj pochodzenia: {{ flight.liveData.originCountry }}</p>
-              <p class="text-sky-500 text-sm">Wysokość: {{ flight.liveData.altitude ? (flight.liveData.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</p>
-              <p class="text-sky-500 text-sm">Prędkość: {{ flight.liveData.velocity ? (flight.liveData.velocity * 3.6 | number:'1.0-0') + ' km/h' : '-' }}</p>
+              <p class="text-sky-500 dark:text-sky-400 text-sm">Kraj pochodzenia: {{ flight.liveData.originCountry }}</p>
+              <p class="text-sky-500 dark:text-sky-400 text-sm">Wysokość: {{ flight.liveData.altitude ? (flight.liveData.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</p>
+              <p class="text-sky-500 dark:text-sky-400 text-sm">Prędkość: {{ flight.liveData.velocity ? (flight.liveData.velocity * 3.6 | number:'1.0-0') + ' km/h' : '-' }}</p>
             } @else {
-              <p class="text-sky-300 text-sm">Brak aktywnych danych</p>
+              <p class="text-sky-300 dark:text-sky-600 text-sm">Brak aktywnych danych</p>
             }
           </div>
         }
@@ -90,21 +90,21 @@
   }
 
   @if (activeModal) {
-    <div class="fixed inset-0 bg-sky-900/20 backdrop-blur-sm flex items-center justify-center z-50" (click)="closeModal()">
-      <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4" (click)="$event.stopPropagation()">
+    <div class="fixed inset-0 bg-sky-900/20 dark:bg-slate-950/40 backdrop-blur-sm flex items-center justify-center z-50 transition-colors" (click)="closeModal()">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-md mx-4 transition-colors" (click)="$event.stopPropagation()">
         @if (activeModal === 'airport') {
-          <h3 class="text-sky-700 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lotnisko' : 'Dodaj lotnisko' }}</h3>
-          <input [(ngModel)]="formIcao" placeholder="Kod ICAO (np. EPBK)" [disabled]="editMode" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-3 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300 disabled:bg-sky-50 disabled:text-sky-400" />
-          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa Okęcie)" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-4 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" />
+          <h3 class="text-sky-700 dark:text-sky-300 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lotnisko' : 'Dodaj lotnisko' }}</h3>
+          <input [(ngModel)]="formIcao" placeholder="Kod ICAO (np. EPBK)" [disabled]="editMode" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa Okęcie)" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500" />
         }
         @if (activeModal === 'flight') {
-          <h3 class="text-sky-700 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lot' : 'Dodaj lot' }}</h3>
-          <input [(ngModel)]="formCallsign" placeholder="Callsign (np. LOT451)" [disabled]="editMode" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-3 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300 disabled:bg-sky-50 disabled:text-sky-400" />
-          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa - Londyn)" class="w-full border border-sky-200 rounded-xl px-4 py-2 mb-4 text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" />
+          <h3 class="text-sky-700 dark:text-sky-300 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lot' : 'Dodaj lot' }}</h3>
+          <input [(ngModel)]="formCallsign" placeholder="Callsign (np. LOT451)" [disabled]="editMode" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa - Londyn)" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500" />
         }
         <div class="flex justify-end gap-3">
-          <button (click)="closeModal()" class="text-sky-400 hover:text-sky-600 px-4 py-2 text-sm">Anuluj</button>
-          <button (click)="submitModal()" class="bg-sky-500 hover:bg-sky-600 text-white px-5 py-2 rounded-xl text-sm transition">{{ editMode ? 'Zapisz' : 'Dodaj' }}</button>
+          <button (click)="closeModal()" class="text-sky-400 dark:text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 px-4 py-2 text-sm">Anuluj</button>
+          <button (click)="submitModal()" class="bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white px-5 py-2 rounded-xl text-sm transition">{{ editMode ? 'Zapisz' : 'Dodaj' }}</button>
         </div>
       </div>
     </div>

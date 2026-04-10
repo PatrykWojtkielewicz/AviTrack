@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './app.css',
   standalone: false
 })
-export class App {
+export class App implements OnInit {
   title = 'avitrack-frontend';
+
+  constructor(private themeService: ThemeService) {}
+
+  ngOnInit() { }
 }

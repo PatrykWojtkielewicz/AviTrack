@@ -1,53 +1,53 @@
 <app-navbar></app-navbar>
-<div class="min-h-screen bg-sky-50 py-8 flex justify-center">
+<div class="min-h-screen bg-sky-50 dark:bg-slate-900 py-8 flex justify-center transition-colors">
   <div class="w-full sm:max-w-[90%] md:max-w-[70%] px-6">
-    <button (click)="goBack()" class="text-sky-500 hover:text-sky-700 mb-6 flex items-center gap-2 transition">
+    <button (click)="goBack()" class="text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 mb-6 flex items-center gap-2 transition">
       ← Powrót do dashboardu
     </button>
 
     @if (loading) {
-      <div class="text-sky-400 text-center mt-20 text-lg">Ładowanie szczegółów lotu...</div>
+      <div class="text-sky-400 dark:text-sky-500 text-center mt-20 text-lg">Ładowanie szczegółów lotu...</div>
     }
 
     @if (error) {
-      <div class="text-red-500 text-center mt-20 bg-red-50 border border-red-200 rounded-xl p-4">{{ error }}</div>
+      <div class="text-red-500 dark:text-red-400 text-center mt-20 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">{{ error }}</div>
     }
 
     @if (!loading && flight) {
-      <div class="bg-white rounded-2xl shadow-md border border-sky-100 p-8 mb-6">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-sky-100 dark:border-slate-700 p-8 mb-6 transition-colors">
         <div class="mb-8">
-          <h1 class="text-sky-700 text-4xl font-bold mb-2">{{ flight.callsign }}</h1>
-          <p class="text-sky-500 text-lg">{{ flight.customLabel }}</p>
+          <h1 class="text-sky-700 dark:text-sky-300 text-4xl font-bold mb-2">{{ flight.callsign }}</h1>
+          <p class="text-sky-500 dark:text-sky-400 text-lg">{{ flight.customLabel }}</p>
         </div>
 
         <div class="mb-8">
-          <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Lokalizacja</h2>
-          <div 
-            #mapContainer 
-            class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 shadow-sm z-0">
+          <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Lokalizacja</h2>
+          <div
+            #mapContainer
+            class="w-full h-80 md:h-96 lg:h-[450px] rounded-xl overflow-hidden border border-sky-200 dark:border-slate-700 shadow-sm z-0">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Tracked Flight Information -->
           <div>
-            <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Informacje o śledzonym locie</h2>
+            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Informacje o śledzonym locie</h2>
             <div class="space-y-3">
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">ID</p>
-                <p class="text-sky-700 font-semibold">{{ flight.id }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">ID</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.id }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Callsign</p>
-                <p class="text-sky-700 font-semibold">{{ flight.callsign }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Callsign</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.callsign }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Etykieta</p>
-                <p class="text-sky-700 font-semibold">{{ flight.customLabel }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Etykieta</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.customLabel }}</p>
               </div>
               <div>
-                <p class="text-sky-400 text-xs font-medium uppercase">Utworzono</p>
-                <p class="text-sky-700 font-semibold">{{ flight.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Utworzono</p>
+                <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.createdAt | date:'dd.MM.yyyy HH:mm:ss' }}</p>
               </div>
             </div>
           </div>
@@ -55,29 +55,29 @@
           <!-- Live Flight Data -->
           @if (flight.liveData) {
             <div>
-              <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Dane na żywo</h2>
+              <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Dane na żywo</h2>
               <div class="space-y-3">
                 <div>
-                  <p class="text-sky-400 text-xs font-medium uppercase">Status</p>
-                  <p class="text-sky-700 font-semibold">
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Status</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">
                     @if (flight.liveData.onGround) {
-                      <span class="text-orange-500">Na ziemi ✓</span>
+                      <span class="text-orange-500 dark:text-orange-400">Na ziemi ✓</span>
                     } @else {
-                      <span class="text-green-500">W powietrzu ✓</span>
+                      <span class="text-green-500 dark:text-green-400">W powietrzu ✓</span>
                     }
                   </p>
                 </div>
                 <div>
-                  <p class="text-sky-400 text-xs font-medium uppercase">ICAO24</p>
-                  <p class="text-sky-700 font-semibold font-mono">{{ flight.liveData.icao24 }}</p>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">ICAO24</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold font-mono">{{ flight.liveData.icao24 }}</p>
                 </div>
                 <div>
-                  <p class="text-sky-400 text-xs font-medium uppercase">Kraj pochodzenia</p>
-                  <p class="text-sky-700 font-semibold">{{ flight.liveData.originCountry }}</p>
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Kraj pochodzenia</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">{{ flight.liveData.originCountry }}</p>
                 </div>
                 <div>
-                  <p class="text-sky-400 text-xs font-medium uppercase">Wysokość</p>
-                  <p class="text-sky-700 font-semibold">
+                  <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase">Wysokość</p>
+                  <p class="text-sky-700 dark:text-slate-200 font-semibold">
                     @if (flight.liveData.altitude !== null) {
                       {{ flight.liveData.altitude | number:'1.0-0' }} m
                     } @else {
@@ -89,19 +89,19 @@
             </div>
           } @else {
             <div>
-              <h2 class="text-sky-600 font-semibold text-lg mb-4 pb-2 border-b border-sky-200">Dane na żywo</h2>
-              <p class="text-sky-300 text-sm">Brak aktywnych danych dla tego lotu</p>
+              <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4 pb-2 border-b border-sky-200 dark:border-slate-700">Dane na żywo</h2>
+              <p class="text-sky-300 dark:text-sky-600 text-sm">Brak aktywnych danych dla tego lotu</p>
             </div>
           }
         </div>
 
         @if (flight.liveData) {
-          <div class="mt-8 pt-8 border-t border-sky-200">
-            <h2 class="text-sky-600 font-semibold text-lg mb-4">Parametry lotu</h2>
+          <div class="mt-8 pt-8 border-t border-sky-200 dark:border-slate-700">
+            <h2 class="text-sky-600 dark:text-sky-400 font-semibold text-lg mb-4">Parametry lotu</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div class="bg-sky-50 rounded-xl p-4">
-                <p class="text-sky-400 text-xs font-medium uppercase mb-2">Prędkość</p>
-                <p class="text-sky-700 font-bold text-xl">
+              <div class="bg-sky-50 dark:bg-slate-700 rounded-xl p-4 transition-colors">
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase mb-2">Prędkość</p>
+                <p class="text-sky-700 dark:text-sky-300 font-bold text-xl">
                   @if (flight.liveData.velocity !== null) {
                     {{ flight.liveData.velocity * 3.6 | number:'1.0-0' }} km/h
                   } @else {
@@ -110,9 +110,9 @@
                 </p>
               </div>
 
-              <div class="bg-sky-50 rounded-xl p-4">
-                <p class="text-sky-400 text-xs font-medium uppercase mb-2">Kurs magnetyczny</p>
-                <p class="text-sky-700 font-bold text-xl">
+              <div class="bg-sky-50 dark:bg-slate-700 rounded-xl p-4 transition-colors">
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase mb-2">Kurs magnetyczny</p>
+                <p class="text-sky-700 dark:text-sky-300 font-bold text-xl">
                   @if (flight.liveData.heading !== null) {
                     {{ flight.liveData.heading | number:'1.0-0' }}°
                   } @else {
@@ -121,9 +121,9 @@
                 </p>
               </div>
 
-              <div class="bg-sky-50 rounded-xl p-4">
-                <p class="text-sky-400 text-xs font-medium uppercase mb-2">Szerokość geograficzna</p>
-                <p class="text-sky-700 font-bold text-xl font-mono text-sm">
+              <div class="bg-sky-50 dark:bg-slate-700 rounded-xl p-4 transition-colors">
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase mb-2">Szerokość geograficzna</p>
+                <p class="text-sky-700 dark:text-sky-300 font-bold text-xl font-mono text-sm">
                   @if (flight.liveData.latitude !== null) {
                     {{ flight.liveData.latitude | number:'1.0-6' }}
                   } @else {
@@ -132,9 +132,9 @@
                 </p>
               </div>
 
-              <div class="bg-sky-50 rounded-xl p-4">
-                <p class="text-sky-400 text-xs font-medium uppercase mb-2">Długość geograficzna</p>
-                <p class="text-sky-700 font-bold text-xl font-mono text-sm">
+              <div class="bg-sky-50 dark:bg-slate-700 rounded-xl p-4 transition-colors">
+                <p class="text-sky-400 dark:text-sky-500 text-xs font-medium uppercase mb-2">Długość geograficzna</p>
+                <p class="text-sky-700 dark:text-sky-300 font-bold text-xl font-mono text-sm">
                   @if (flight.liveData.longitude !== null) {
                     {{ flight.liveData.longitude | number:'1.0-6' }}
                   } @else {
