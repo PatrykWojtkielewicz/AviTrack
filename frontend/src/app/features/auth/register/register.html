@@ -58,6 +58,8 @@
     <p class="text-sky-500 dark:text-sky-400 text-sm mt-4 text-center">
       Masz już konto? <a routerLink="/login" class="text-sky-600 dark:text-sky-300 hover:underline font-medium">Zaloguj się</a>
     </p>
-    <p *ngIf="error" class="text-red-500 dark:text-red-400 text-sm mt-3 text-center">{{ error }}</p>
+    @if (error) {
+      <p class="text-red-500 dark:text-red-400 text-sm mt-3 text-center">{{ error }}</p>
+    }
   </div>
 </div>
