@@ -9,16 +9,18 @@ export class AuthService {
     private apiUrl = '/api/auth';
     private username: string | null = null;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+        this.loadUsername();
+    }
 
     register(username: string, email: string, password: string) {
         return this.http.post<{ username: string }>(`${this.apiUrl}/register`, { username, email, password }, { withCredentials: true })
-            .pipe(tap(res => this.username = res.username));
+            .pipe(tap(res => this.setUsername(res.username)));
     }
 
     login(email: string, password: string) {
         return this.http.post<{ username: string }>(`${this.apiUrl}/login`, { email, password }, { withCredentials: true })
-            .pipe(tap(res => this.username = res.username));
+            .pipe(tap(res => this.setUsername(res.username)));
     }
 
     logout() {
@@ -28,7 +30,7 @@ export class AuthService {
                 sessionStorage.removeItem('username');
             }));
     }
-    
+
     getUsername() {
         return this.username;
     }
@@ -36,7 +38,7 @@ export class AuthService {
     private loadUsername() {
         this.username = sessionStorage.getItem('username');
     }
-    
+
     isLoggedIn() {
         return !!this.username;
     }
@@ -44,6 +46,11 @@ export class AuthService {
     setUsername(username: string) {
         this.username = username;
         sessionStorage.setItem('username', username);
+    }
+
+    updateUsername(newUsername: string) {
+        return this.http.put<{ username: string }>(`${this.apiUrl}/username`, { username: newUsername }, { withCredentials: true })
+            .pipe(tap(res => this.setUsername(res.username)));
     }
 
 }
