@@ -27,28 +27,6 @@ namespace AviTrack.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrackedAircraftTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    IcaoTypeCode = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomLabel = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrackedAircraftTypes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TrackedAircraftTypes_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TrackedAirports",
                 columns: table => new
                 {
@@ -93,11 +71,6 @@ namespace AviTrack.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrackedAircraftTypes_UserId",
-                table: "TrackedAircraftTypes",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TrackedAirports_UserId",
                 table: "TrackedAirports",
                 column: "UserId");
@@ -111,9 +84,6 @@ namespace AviTrack.Api.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "TrackedAircraftTypes");
-
             migrationBuilder.DropTable(
                 name: "TrackedAirports");
 

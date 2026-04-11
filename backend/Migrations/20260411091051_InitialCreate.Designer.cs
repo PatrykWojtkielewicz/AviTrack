@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AviTrack.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260410101021_UpdateModel")]
-    partial class UpdateModel
+    [Migration("20260411091051_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
