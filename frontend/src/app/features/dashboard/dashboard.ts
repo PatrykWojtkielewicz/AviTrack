@@ -22,6 +22,8 @@ export class Dashboard implements OnInit {
   openDropdownId: string | null = null;
   editMode = false;
   editingId: number | null = null;
+  modalLoading = false;
+  modalError = '';
 
   formIcao = '';
   formCallsign = '';
@@ -67,6 +69,8 @@ export class Dashboard implements OnInit {
     this.formIcao = '';
     this.formCallsign = '';
     this.formLabel = '';
+    this.modalLoading = false;
+    this.modalError = '';
   }
 
   openEditAirportModal(airport: any) {
@@ -76,6 +80,8 @@ export class Dashboard implements OnInit {
     this.formIcao = airport.icaoCode;
     this.formLabel = airport.customLabel;
     this.openDropdownId = null;
+    this.modalLoading = false;
+    this.modalError = '';
   }
 
   openEditFlightModal(flight: any) {
@@ -85,10 +91,14 @@ export class Dashboard implements OnInit {
     this.formCallsign = flight.callsign;
     this.formLabel = flight.customLabel;
     this.openDropdownId = null;
+    this.modalLoading = false;
+    this.modalError = '';
   }
 
   closeModal() {
     this.activeModal = null;
+    this.modalLoading = false;
+    this.modalError = '';
   }
 
   toggleDropdown(id: string) {
@@ -96,28 +106,64 @@ export class Dashboard implements OnInit {
   }
 
   submitModal() {
+    if (this.modalLoading) return;
+    this.modalLoading = true;
+    this.modalError = '';
+
     if (this.activeModal === 'airport') {
       if (this.editMode && this.editingId !== null) {
-        this.airportService.update(this.editingId, this.formLabel).subscribe(() => {
-          this.closeModal();
-          this.loadDashboard();
+        this.airportService.update(this.editingId, this.formLabel).subscribe({
+          next: () => {
+            this.modalLoading = false;
+            this.closeModal();
+            this.loadDashboard();
+          },
+          error: () => {
+            this.modalLoading = false;
+            this.modalError = 'Nie udało się zapisać lotniska';
+            this.cdr.detectChanges();
+          }
         });
       } else {
-        this.airportService.add(this.formIcao, this.formLabel).subscribe(() => {
-          this.closeModal();
-          this.loadDashboard();
+        this.airportService.add(this.formIcao, this.formLabel).subscribe({
+          next: () => {
+            this.modalLoading = false;
+            this.closeModal();
+            this.loadDashboard();
+          },
+          error: (err) => {
+            this.modalLoading = false;
+            this.modalError = err.status === 0 ? 'Nie udało połączyć się z serwerem. Spróbuj ponownie później' : 'Nie udało się zapisać lotniska';
+            this.cdr.detectChanges();
+          }
         });
       }
     } else if (this.activeModal === 'flight') {
       if (this.editMode && this.editingId !== null) {
-        this.flightService.update(this.editingId, this.formLabel).subscribe(() => {
-          this.closeModal();
-          this.loadDashboard();
+        this.flightService.update(this.editingId, this.formLabel).subscribe({
+          next: () => {
+            this.modalLoading = false;
+            this.closeModal();
+            this.loadDashboard();
+          },
+          error: () => {
+            this.modalLoading = false;
+            this.modalError = 'Nie udało się zapisać lotu';
+            this.cdr.detectChanges();
+          }
         });
       } else {
-        this.flightService.add(this.formCallsign, this.formLabel).subscribe(() => {
-          this.closeModal();
-          this.loadDashboard();
+        this.flightService.add(this.formCallsign, this.formLabel).subscribe({
+          next: () => {
+            this.modalLoading = false;
+            this.closeModal();
+            this.loadDashboard();
+          },
+          error: (err) => {
+            this.modalLoading = false;
+            this.modalError = err.status === 0 ? 'Nie udało połączyć się z serwerem. Spróbuj ponownie później' : 'Nie udało się zapisać lotu';
+            this.cdr.detectChanges();
+          }
         });
       }
     }

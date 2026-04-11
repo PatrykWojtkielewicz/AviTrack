@@ -12,11 +12,14 @@ export class Login {
   email = '';
   password = '';
   error = '';
+  loading = false;
 
   constructor(private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   onSubmit() {
+    if (this.loading) return;
     this.error = '';
+    this.loading = true;
 
     this.authService.login(this.email, this.password).subscribe({
       next: (res) => {
@@ -32,6 +35,7 @@ export class Login {
           this.error = 'Coś poszło nie tak. Spróbuj ponownie później';
         }
 
+        this.loading = false;
         this.cdr.detectChanges();
       }
     });

@@ -13,6 +13,7 @@ export class Register {
   email = '';
   password = '';
   error = '';
+  loading = false;
 
   rules = [
     { label: 'Minimum 8 znaków', met: false, check: (p: string) => p.length >= 8 },
@@ -36,7 +37,10 @@ export class Register {
       return;
     }
 
+    if (this.loading) return;
     this.error = '';
+    this.loading = true;
+
     this.authService.register(this.username, this.email, this.password).subscribe({
       next: (res) => {
         this.authService.setUsername(res.username);
@@ -50,6 +54,7 @@ export class Register {
         } else {
           this.error = 'Coś poszło nie tak. Spróbuj ponownie później';
         }
+        this.loading = false;
         this.cdr.detectChanges();
       }
     });

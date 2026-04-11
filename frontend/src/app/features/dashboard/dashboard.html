@@ -94,17 +94,22 @@
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-md mx-4 transition-colors" (click)="$event.stopPropagation()">
         @if (activeModal === 'airport') {
           <h3 class="text-sky-700 dark:text-sky-300 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lotnisko' : 'Dodaj lotnisko' }}</h3>
-          <input [(ngModel)]="formIcao" placeholder="Kod ICAO (np. EPBK)" [disabled]="editMode" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
-          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa Okęcie)" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500" />
+          <input [(ngModel)]="formIcao" placeholder="Kod ICAO (np. EPBK)" [disabled]="editMode || modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa Okęcie)" [disabled]="modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
         }
         @if (activeModal === 'flight') {
           <h3 class="text-sky-700 dark:text-sky-300 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lot' : 'Dodaj lot' }}</h3>
-          <input [(ngModel)]="formCallsign" placeholder="Callsign (np. LOT451)" [disabled]="editMode" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
-          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa - Londyn)" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500" />
+          <input [(ngModel)]="formCallsign" placeholder="Callsign (np. LOT451)" [disabled]="editMode || modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa - Londyn)" [disabled]="modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+        }
+        @if (modalError) {
+          <p class="text-red-500 dark:text-red-400 text-sm mb-3">{{ modalError }}</p>
         }
         <div class="flex justify-end gap-3">
-          <button (click)="closeModal()" class="text-sky-400 dark:text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 px-4 py-2 text-sm">Anuluj</button>
-          <button (click)="submitModal()" class="bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white px-5 py-2 rounded-xl text-sm transition">{{ editMode ? 'Zapisz' : 'Dodaj' }}</button>
+          <button (click)="closeModal()" [disabled]="modalLoading" class="text-sky-400 dark:text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 disabled:opacity-50 px-4 py-2 text-sm">Anuluj</button>
+          <button (click)="submitModal()" [disabled]="modalLoading" class="bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 disabled:bg-sky-300 dark:disabled:bg-sky-800 text-white px-5 py-2 rounded-xl text-sm transition">
+            @if (modalLoading) { Zapisywanie... } @else { {{ editMode ? 'Zapisz' : 'Dodaj' }} }
+          </button>
         </div>
       </div>
     </div>

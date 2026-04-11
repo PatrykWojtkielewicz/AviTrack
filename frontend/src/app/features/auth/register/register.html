@@ -12,7 +12,8 @@
           [(ngModel)]="username"
           name="username"
           autocomplete="username"
-          class="w-full bg-sky-50 dark:bg-slate-700 text-sky-900 dark:text-slate-100 border border-sky-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-500"
+          [disabled]="loading"
+          class="w-full bg-sky-50 dark:bg-slate-700 text-sky-900 dark:text-slate-100 border border-sky-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-500 disabled:opacity-60"
         />
       </div>
       <div class="mb-4">
@@ -22,7 +23,8 @@
           [(ngModel)]="email"
           name="email"
           autocomplete="email"
-          class="w-full bg-sky-50 dark:bg-slate-700 text-sky-900 dark:text-slate-100 border border-sky-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-500"
+          [disabled]="loading"
+          class="w-full bg-sky-50 dark:bg-slate-700 text-sky-900 dark:text-slate-100 border border-sky-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-500 disabled:opacity-60"
         />
       </div>
       <div class="mb-6">
@@ -32,8 +34,9 @@
         [(ngModel)]="password"
         name="password"
         autocomplete="new-password"
+        [disabled]="loading"
         (ngModelChange)="onPasswordChange()"
-        class="w-full bg-sky-50 dark:bg-slate-700 text-sky-900 dark:text-slate-100 border border-sky-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-500"
+        class="w-full bg-sky-50 dark:bg-slate-700 text-sky-900 dark:text-slate-100 border border-sky-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:focus:ring-sky-500 disabled:opacity-60"
       />
       <ul class="mt-2 space-y-1">
         @for (rule of rules; track rule) {
@@ -50,9 +53,10 @@
     </div>
       <button
         type="submit"
-        class="w-full bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white py-2 rounded-lg font-semibold transition-colors"
+        [disabled]="loading"
+        class="w-full bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 disabled:bg-sky-300 dark:disabled:bg-sky-800 text-white py-2 rounded-lg font-semibold transition-colors"
       >
-        Zarejestruj się
+        @if (loading) { Rejestrowanie... } @else { Zarejestruj się }
       </button>
     </form>
     <p class="text-sky-500 dark:text-sky-400 text-sm mt-4 text-center">
