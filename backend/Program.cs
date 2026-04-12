@@ -7,11 +7,10 @@ using AviTrack.Api.Services;
 using AviTrack.Api.Settings;
 using DotNetEnv;
 
-DotNet.Load();
+DotNetEnv.Env.Load("../.env");
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load environment variables into configuration
 builder.Configuration
     .AddInMemoryCollection(new Dictionary<string, string?>
     {
