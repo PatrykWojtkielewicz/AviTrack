@@ -8,7 +8,7 @@ A full-stack web application designed for tracking your favourite flights and ai
 | ORM | Entity Framework Core |
 | Database | SQLite |
 | External API | OpenSky Network |
-| Airpoort List | [github/jpatokal](https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat)
+| Airport List | [github/jpatokal](https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat)
 
 ## Running with Docker (recommended)
 
