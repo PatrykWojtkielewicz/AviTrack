@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Register } from './features/auth/register/register';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Navbar } from './shared/components/navbar/navbar';
+import { ThemeToggle } from './shared/components/theme-toggle/theme-toggle';
 import { FlightDetail } from './features/flight-detail/flight-detail';
 import { AirportDetail } from './features/airport-detail/airport-detail';
 import { Footer } from './shared/components/footer/footer';
@@ -23,6 +24,7 @@ import { User } from './features/user/user';
     Register,
     Dashboard,
     Navbar,
+    ThemeToggle,
     FlightDetail,
     AirportDetail,
     Footer,

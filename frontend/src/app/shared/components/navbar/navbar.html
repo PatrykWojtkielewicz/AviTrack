@@ -1,28 +1,7 @@
 <nav class="bg-white dark:bg-slate-900 border-b border-sky-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between shadow-sm transition-colors">
   <span (click)="goToDashboard()" class="text-sky-600 dark:text-sky-400 text-xl font-bold tracking-wide cursor-pointer">✈ AviTrack</span>
   <div class="flex items-center gap-4">
-    <button
-      (click)="toggleDarkMode()"
-      class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors"
-      [class.bg-sky-500]="!darkMode"
-      [class.bg-slate-600]="darkMode"
-      [title]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-    >
-      <span
-        class="inline-block h-6 w-6 transform rounded-full bg-white shadow-lg transition-transform"
-        [class.translate-x-1]="!darkMode"
-        [class.translate-x-7]="darkMode"
-      >
-        <span class="flex items-center justify-center h-full text-sm">
-          @if (!darkMode) {
-            <span>☀️</span>
-          }
-          @if (darkMode) {
-            <span>🌙</span>
-          }
-        </span>
-      </span>
-    </button>
+    <app-theme-toggle></app-theme-toggle>
     <button
       (click)="openUserSettings()"
       class="text-sm text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 font-medium transition-colors"

@@ -1,0 +1,22 @@
+<button
+  (click)="toggleDarkMode()"
+  class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors"
+  [class.bg-sky-500]="!darkMode"
+  [class.bg-slate-600]="darkMode"
+  [title]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+>
+  <span
+    class="inline-block h-6 w-6 transform rounded-full bg-white shadow-lg transition-transform"
+    [class.translate-x-1]="!darkMode"
+    [class.translate-x-7]="darkMode"
+  >
+    <span class="flex items-center justify-center h-full text-sm">
+      @if (!darkMode) {
+        <span>☀️</span>
+      }
+      @if (darkMode) {
+        <span>🌙</span>
+      }
+    </span>
+  </span>
+</button>
