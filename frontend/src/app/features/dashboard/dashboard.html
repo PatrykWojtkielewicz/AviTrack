@@ -38,10 +38,14 @@
             <p class="text-sky-500 dark:text-sky-400 text-sm mb-3">{{ airport.customLabel }}</p>
             <p class="text-sky-600 dark:text-sky-400 text-sm font-medium mb-2">Loty w pobliżu: {{ airport.nearbyFlights.length }}</p>
             <div class="space-y-1">
-              @for (flight of airport.nearbyFlights.slice(0, 5); track flight.icao24) {
-                <div class="text-xs text-sky-500 dark:text-sky-400 flex justify-between">
+              @for (flight of airport.nearbyFlights.slice(0, 5); track flight.icao24; let distance = $index) {
+                @let dist = calculateDistance(airport.latitude, airport.longitude, flight.latitude, flight.longitude);
+                <div class="text-xs text-sky-500 dark:text-sky-400 flex justify-between items-center">
                   <span>{{ flight.callsign }}</span>
-                  <span>Wysokość: {{ flight.altitude ? (flight.altitude | number:'1.0-0') + ' m' : 'na ziemi' }}</span>
+                  <div class="flex gap-1">
+                    <span class="w-20 text-right">Odległość:</span>
+                    <span class="w-16 text-right">{{ dist ? (dist | number:'1.0-0') + ' km' : '-' }}</span>
+                  </div>
                 </div>
               }
             </div>
