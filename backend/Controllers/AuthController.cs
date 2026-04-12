@@ -11,10 +11,23 @@ namespace AviTrack.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
+    private readonly IWebHostEnvironment _env;
 
-    public AuthController(AuthService authService)
+    public AuthController(AuthService authService, IWebHostEnvironment env)
     {
         _authService = authService;
+        _env = env;
+    }
+
+    private CookieOptions GetCookieOptions()
+    {
+        return new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = !_env.IsDevelopment(),
+            SameSite = SameSiteMode.Lax,
+            Expires = DateTimeOffset.UtcNow.AddDays(7)
+        };
     }
 
     [HttpPost("register")]
@@ -27,17 +40,7 @@ public class AuthController : ControllerBase
             return Conflict("Email is already in use");
         }
 
-        Response.Cookies.Append(
-            "token",
-            result.Token,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.Lax,
-                Expires = DateTimeOffset.UtcNow.AddDays(7)
-            }
-        );
+        Response.Cookies.Append("token", result.Token, GetCookieOptions());
 
         return Ok(new { username = result.Username });
     }
@@ -52,17 +55,7 @@ public class AuthController : ControllerBase
             return Conflict("Invalid credentials");
         }
 
-        Response.Cookies.Append(
-            "token",
-            result.Token,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.Lax,
-                Expires = DateTimeOffset.UtcNow.AddDays(7)
-            }
-        );
+        Response.Cookies.Append("token", result.Token, GetCookieOptions());
 
         return Ok(new { username = result.Username });
     }
