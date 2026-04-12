@@ -13,8 +13,13 @@ export class Login {
   password = '';
   error = '';
   loading = false;
+  showPassword = false;
 
   constructor(private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) {}
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     if (this.loading) return;

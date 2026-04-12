@@ -14,6 +14,7 @@ export class Register {
   password = '';
   error = '';
   loading = false;
+  showPassword = false;
 
   rules = [
     { label: 'Minimum 8 znaków', met: false, check: (p: string) => p.length >= 8 },
@@ -27,6 +28,10 @@ export class Register {
 
   onPasswordChange() {
     this.rules.forEach(r => r.met = r.check(this.password));
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   constructor(private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) {}
