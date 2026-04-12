@@ -45,8 +45,12 @@ public class FlightService
         );
     }
 
-    public async Task<FlightResponse> Add(int userId, AddFlightRequest request)
+    public async Task<FlightResponse?> Add(int userId, AddFlightRequest request)
     {
+        var flightData = await _openSky.GetFlightByCallsign(request.Callsign);
+        if (flightData is null)
+            return null;
+
         var flight = new TrackedFlight
         {
             UserId = userId,

@@ -45,6 +45,8 @@ public class FlightsController : ControllerBase
     public async Task<IActionResult> Add(AddFlightRequest request)
     {
         var flight = await _flightService.Add(GetUserId(), request);
+        if (flight is null)
+            return BadRequest(new { error = "Lot o podanym callsign nie istnieje" });
         return Ok(flight);
     }
 

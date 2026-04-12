@@ -133,7 +133,13 @@ export class Dashboard implements OnInit {
           },
           error: (err) => {
             this.modalLoading = false;
-            this.modalError = err.status === 0 ? 'Nie udało połączyć się z serwerem. Spróbuj ponownie później' : 'Nie udało się zapisać lotniska';
+            if (err.status === 0) {
+              this.modalError = 'Nie udało połączyć się z serwerem. Spróbuj ponownie później';
+            } else if (err.error?.error) {
+              this.modalError = err.error.error;
+            } else {
+              this.modalError = 'Nie udało się zapisać lotniska';
+            }
             this.cdr.detectChanges();
           }
         });
@@ -161,7 +167,13 @@ export class Dashboard implements OnInit {
           },
           error: (err) => {
             this.modalLoading = false;
-            this.modalError = err.status === 0 ? 'Nie udało połączyć się z serwerem. Spróbuj ponownie później' : 'Nie udało się zapisać lotu';
+            if (err.status === 0) {
+              this.modalError = 'Nie udało połączyć się z serwerem. Spróbuj ponownie później';
+            } else if (err.error?.error) {
+              this.modalError = err.error.error;
+            } else {
+              this.modalError = 'Nie udało się zapisać lotu';
+            }
             this.cdr.detectChanges();
           }
         });

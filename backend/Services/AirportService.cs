@@ -70,8 +70,12 @@ public class AirportService
         );
     }
 
-    public async Task<AirportResponse> Add(int userId, AddAirportRequest request)
+    public async Task<AirportResponse?> Add(int userId, AddAirportRequest request)
     {
+        var airportInfo = await _airportData.GetByIcao(request.IcaoCode);
+        if (airportInfo is null)
+            return null;
+
         var airport = new TrackedAirport
         {
             UserId = userId,
