@@ -5,8 +5,20 @@ using System.Text;
 using AviTrack.Api.Data;
 using AviTrack.Api.Services;
 using AviTrack.Api.Settings;
+using DotNetEnv;
+
+DotNet.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load environment variables into configuration
+builder.Configuration
+    .AddInMemoryCollection(new Dictionary<string, string?>
+    {
+        { "Jwt:Key", Environment.GetEnvironmentVariable("JWT_KEY") },
+        { "OpenSky:ClientId", Environment.GetEnvironmentVariable("OPENSKY_CLIENT_ID") },
+        { "OpenSky:ClientSecret", Environment.GetEnvironmentVariable("OPENSKY_CLIENT_SECRET") }
+    });
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
