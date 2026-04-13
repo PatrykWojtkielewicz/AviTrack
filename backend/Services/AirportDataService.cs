@@ -64,4 +64,15 @@ public class AirportDataService
         _airports.TryGetValue(icao.ToUpper(), out var info);
         return info;
     }
+
+    public async Task<List<AirportInfo>> SearchByCity(string city)
+    {
+        await EnsureLoadedAsync();
+        var normalized = city.Trim().ToLower();
+        return _airports.Values
+            .Where(a => a.City.ToLower().Contains(normalized))
+            .OrderBy(a => a.City)
+            .ThenBy(a => a.Name)
+            .ToList();
+    }
 }

@@ -12,14 +12,26 @@ namespace AviTrack.Api.Controllers;
 public class AirportsController : ControllerBase
 {
     private readonly AirportService _airportService;
+    private readonly AirportDataService _airportDataService;
 
-    public AirportsController(AirportService airportService)
+    public AirportsController(AirportService airportService, AirportDataService airportDataService)
     {
         _airportService = airportService;
+        _airportDataService = airportDataService;
     }
 
     private int GetUserId() =>
         int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchByCity([FromQuery] string city)
+    {
+        if (string.IsNullOrWhiteSpace(city))
+            return Ok(Array.Empty<object>());
+
+        var results = await _airportDataService.SearchByCity(city);
+        return Ok(results);
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()

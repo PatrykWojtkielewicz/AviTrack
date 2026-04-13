@@ -98,7 +98,39 @@
       <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-md mx-4 transition-colors" (click)="$event.stopPropagation()">
         @if (activeModal === 'airport') {
           <h3 class="text-sky-700 dark:text-sky-300 font-semibold text-lg mb-4">{{ editMode ? 'Edytuj lotnisko' : 'Dodaj lotnisko' }}</h3>
-          <input [(ngModel)]="formIcao" placeholder="Kod ICAO (np. EPBK)" [disabled]="editMode || modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          @if (!editMode) {
+            <div class="relative mb-3">
+              <input [ngModel]="citySearch" (ngModelChange)="onCitySearch($event)" placeholder="Wpisz nazwę miasta" [disabled]="modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+              @if (citySearchLoading) {
+                <div class="text-sky-400 dark:text-sky-500 text-xs mt-1">Szukanie...</div>
+              }
+              @if (citySearchResults.length > 0) {
+                <div class="absolute z-10 w-full mt-1 bg-white dark:bg-slate-700 border border-sky-200 dark:border-slate-600 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                  @for (result of citySearchResults; track result.icao) {
+                    <button (click)="selectAirport(result)" class="w-full text-left px-4 py-2 text-sm hover:bg-sky-50 dark:hover:bg-slate-600 first:rounded-t-xl last:rounded-b-xl transition-colors">
+                      <span class="text-sky-700 dark:text-sky-300 font-medium">{{ result.icao }}</span>
+                      <span class="text-sky-500 dark:text-sky-400"> — {{ result.name }}</span>
+                      <span class="text-sky-400 dark:text-sky-500 text-xs block">{{ result.city }}, {{ result.country }}</span>
+                    </button>
+                  }
+                </div>
+              }
+              @if (citySearch.length >= 2 && !citySearchLoading && citySearchResults.length === 0 && !selectedAirport) {
+                <div class="text-sky-400 dark:text-sky-500 text-xs mt-1">Brak wyników dla "{{ citySearch }}"</div>
+              }
+            </div>
+            @if (selectedAirport) {
+              <div class="bg-sky-50 dark:bg-slate-700 border border-sky-200 dark:border-slate-600 rounded-xl px-4 py-2 mb-3 text-sm">
+                <span class="text-sky-700 dark:text-sky-300 font-bold">{{ selectedAirport.icao }}</span>
+                <span class="text-sky-500 dark:text-sky-400"> — {{ selectedAirport.name }}</span>
+                <span class="text-sky-400 dark:text-sky-500 text-xs block">{{ selectedAirport.city }}, {{ selectedAirport.country }}</span>
+              </div>
+            }
+            <div class="text-sky-400 dark:text-sky-500 text-xs mb-2">lub</div>
+            <input [ngModel]="formIcao" (ngModelChange)="onIcaoInput($event)" placeholder="Kod ICAO (np. EPBK)" [disabled]="modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          } @else {
+            <input [(ngModel)]="formIcao" placeholder="Kod ICAO (np. EPBK)" [disabled]="true" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
+          }
           <input [(ngModel)]="formLabel" placeholder="Etykieta (np. Warszawa Okęcie)" [disabled]="modalLoading" class="w-full border border-sky-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-sky-700 dark:text-slate-100 rounded-xl px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-sky-300 dark:focus:ring-sky-500 disabled:bg-sky-50 dark:disabled:bg-slate-600 disabled:text-sky-400 dark:disabled:text-slate-400" />
         }
         @if (activeModal === 'flight') {

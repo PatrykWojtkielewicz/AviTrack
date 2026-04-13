@@ -3,6 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+export type AirportSearchResult = {
+  icao: string;
+  name: string;
+  city: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+};
+
 type CachedAirport = {
   data: any;
   cachedAt: number;
@@ -20,6 +29,10 @@ export class AirportService {
 
   add(icaoCode: string, customLabel: string) {
     return this.http.post(this.apiUrl, { icaoCode, customLabel });
+  }
+
+  searchByCity(city: string) {
+    return this.http.get<AirportSearchResult[]>(`${this.apiUrl}/search`, { params: { city } });
   }
 
   update(id: number, customLabel: string) {

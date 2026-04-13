@@ -1,9 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DashboardService } from '../../core/services/dashboard.service';
-import { AirportService } from '../../core/services/airport.service';
+import { AirportService, AirportSearchResult } from '../../core/services/airport.service';
 import { FlightService } from '../../core/services/flight.service';
 import { DashboardResponse } from '../../core/models/dashboard.model';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 type ModalType = 'airport' | 'flight' | 'aircraftType' | null;
 
@@ -13,7 +16,7 @@ type ModalType = 'airport' | 'flight' | 'aircraftType' | null;
   styleUrl: './dashboard.css',
   standalone: false
 })
-export class Dashboard implements OnInit {
+export class Dashboard implements OnInit, OnDestroy {
   data: DashboardResponse | null = null;
   loading = true;
   error = '';
@@ -29,6 +32,12 @@ export class Dashboard implements OnInit {
   formCallsign = '';
   formLabel = '';
 
+  citySearch = '';
+  citySearchResults: AirportSearchResult[] = [];
+  citySearchLoading = false;
+  selectedAirport: AirportSearchResult | null = null;
+  private citySearch$ = new Subject<string>();
+
   constructor(
     private dashboardService: DashboardService,
     private airportService: AirportService,
@@ -39,6 +48,29 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
     this.loadDashboard();
+
+    this.citySearch$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(city => {
+        if (city.trim().length < 2) {
+          return of([]);
+        }
+        this.citySearchLoading = true;
+        this.cdr.detectChanges();
+        return this.airportService.searchByCity(city).pipe(
+          catchError(() => of([]))
+        );
+      })
+    ).subscribe(results => {
+      this.citySearchResults = results;
+      this.citySearchLoading = false;
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngOnDestroy() {
+    this.citySearch$.complete();
   }
 
   loadDashboard() {
@@ -71,6 +103,31 @@ export class Dashboard implements OnInit {
     this.formLabel = '';
     this.modalLoading = false;
     this.modalError = '';
+    this.citySearch = '';
+    this.citySearchResults = [];
+    this.selectedAirport = null;
+    this.citySearchLoading = false;
+  }
+
+  onCitySearch(value: string) {
+    this.citySearch = value;
+    this.selectedAirport = null;
+    this.formIcao = '';
+    this.citySearch$.next(value);
+  }
+
+  onIcaoInput(value: string) {
+    this.formIcao = value.toUpperCase();
+    this.citySearch = '';
+    this.citySearchResults = [];
+    this.selectedAirport = null;
+  }
+
+  selectAirport(airport: AirportSearchResult) {
+    this.selectedAirport = airport;
+    this.formIcao = airport.icao;
+    this.citySearch = airport.city;
+    this.citySearchResults = [];
   }
 
   openEditAirportModal(airport: any) {
