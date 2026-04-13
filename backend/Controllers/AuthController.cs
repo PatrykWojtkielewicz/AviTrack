@@ -24,7 +24,8 @@ public class AuthController : ControllerBase
         return new CookieOptions
         {
             HttpOnly = true,
-            Secure = !_env.IsDevelopment(),
+            // Secure = !_env.IsDevelopment(),
+            Secure = false,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7)
         };
