@@ -44,6 +44,9 @@ public class FlightsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add(AddFlightRequest request)
     {
+        if (await _flightService.IsFlightTracked(GetUserId(), request.Callsign))
+            return BadRequest(new { error = "Ten lot jest już śledzony" });
+
         var flight = await _flightService.Add(GetUserId(), request);
         if (flight is null)
             return BadRequest(new { error = "Lot o podanym callsign nie istnieje" });

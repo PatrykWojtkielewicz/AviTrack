@@ -56,6 +56,9 @@ public class AirportsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add(AddAirportRequest request)
     {
+        if (await _airportService.IsAirportTracked(GetUserId(), request.IcaoCode))
+            return BadRequest(new { error = "To lotnisko jest już śledzone" });
+
         var airport = await _airportService.Add(GetUserId(), request);
         if (airport is null)
             return BadRequest(new { error = "Lotnisko o podanym kodzie ICAO nie istnieje" });

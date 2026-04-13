@@ -70,16 +70,29 @@ public class AirportService
         );
     }
 
+    public async Task<bool> IsAirportTracked(int userId, string icaoCode)
+    {
+        return await _db.TrackedAirports
+            .AnyAsync(a => a.UserId == userId && a.IcaoCode == icaoCode.ToUpper());
+    }
+
     public async Task<AirportResponse?> Add(int userId, AddAirportRequest request)
     {
-        var airportInfo = await _airportData.GetByIcao(request.IcaoCode);
+        var icaoCode = request.IcaoCode.ToUpper();
+
+        var existingAirport = await _db.TrackedAirports
+            .FirstOrDefaultAsync(a => a.UserId == userId && a.IcaoCode == icaoCode);
+        if (existingAirport is not null)
+            return null;
+
+        var airportInfo = await _airportData.GetByIcao(icaoCode);
         if (airportInfo is null)
             return null;
 
         var airport = new TrackedAirport
         {
             UserId = userId,
-            IcaoCode = request.IcaoCode.ToUpper(),
+            IcaoCode = icaoCode,
             CustomLabel = request.CustomLabel
         };
 

@@ -45,16 +45,29 @@ public class FlightService
         );
     }
 
+    public async Task<bool> IsFlightTracked(int userId, string callsign)
+    {
+        return await _db.TrackedFlights
+            .AnyAsync(f => f.UserId == userId && f.Callsign == callsign.ToUpper());
+    }
+
     public async Task<FlightResponse?> Add(int userId, AddFlightRequest request)
     {
-        var flightData = await _openSky.GetFlightByCallsign(request.Callsign);
+        var callsign = request.Callsign.ToUpper();
+
+        var existingFlight = await _db.TrackedFlights
+            .FirstOrDefaultAsync(f => f.UserId == userId && f.Callsign == callsign);
+        if (existingFlight is not null)
+            return null;
+
+        var flightData = await _openSky.GetFlightByCallsign(callsign);
         if (flightData is null)
             return null;
 
         var flight = new TrackedFlight
         {
             UserId = userId,
-            Callsign = request.Callsign.ToUpper(),
+            Callsign = callsign,
             CustomLabel = request.CustomLabel
         };
 
