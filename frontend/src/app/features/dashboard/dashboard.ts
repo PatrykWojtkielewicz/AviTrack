@@ -116,6 +116,8 @@ export class Dashboard implements OnInit {
           next: () => {
             this.modalLoading = false;
             this.closeModal();
+            this.dashboardService.invalidate();
+            this.airportService.invalidate(this.editingId!);
             this.loadDashboard();
           },
           error: () => {
@@ -129,6 +131,8 @@ export class Dashboard implements OnInit {
           next: () => {
             this.modalLoading = false;
             this.closeModal();
+            this.dashboardService.invalidate();
+            this.airportService.invalidate();
             this.loadDashboard();
           },
           error: (err) => {
@@ -150,6 +154,8 @@ export class Dashboard implements OnInit {
           next: () => {
             this.modalLoading = false;
             this.closeModal();
+            this.dashboardService.invalidate();
+            this.flightService.invalidate(this.editingId!);
             this.loadDashboard();
           },
           error: () => {
@@ -163,6 +169,8 @@ export class Dashboard implements OnInit {
           next: () => {
             this.modalLoading = false;
             this.closeModal();
+            this.dashboardService.invalidate();
+            this.flightService.invalidate();
             this.loadDashboard();
           },
           error: (err) => {
@@ -182,12 +190,20 @@ export class Dashboard implements OnInit {
   }
 
   deleteAirport(id: number) {
-    this.airportService.delete(id).subscribe(() => this.loadDashboard());
+    this.airportService.delete(id).subscribe(() => {
+      this.dashboardService.invalidate();
+      this.airportService.invalidate(id);
+      this.loadDashboard();
+    });
     this.openDropdownId = null;
   }
 
   deleteFlight(id: number) {
-    this.flightService.delete(id).subscribe(() => this.loadDashboard());
+    this.flightService.delete(id).subscribe(() => {
+      this.dashboardService.invalidate();
+      this.flightService.invalidate(id);
+      this.loadDashboard();
+    });
     this.openDropdownId = null;
   }
 
