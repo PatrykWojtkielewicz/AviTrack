@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -39,8 +40,16 @@ export class AuthService {
         this.username = sessionStorage.getItem('username');
     }
 
-    isLoggedIn() {
-        return !!this.username;
+    isLoggedIn(): Observable<boolean> {
+        return this.http.get<{ username: string }>(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
+            tap(res => this.setUsername(res.username)),
+            map(() => true),
+            catchError(() => {
+                this.username = null;
+                sessionStorage.removeItem('username');
+                return of(false);
+            })
+        );
     }
 
     setUsername(username: string) {

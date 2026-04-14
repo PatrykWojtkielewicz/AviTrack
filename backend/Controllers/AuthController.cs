@@ -24,8 +24,7 @@ public class AuthController : ControllerBase
         return new CookieOptions
         {
             HttpOnly = true,
-            // Secure = !_env.IsDevelopment(),
-            Secure = false,
+            Secure = !_env.IsDevelopment(),
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7)
         };
@@ -69,6 +68,15 @@ public class AuthController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var username = User.FindFirst(ClaimTypes.Name)?.Value;
+        if (username is null) return Unauthorized();
+        return Ok(new { username });
+    }
+
+    [Authorize]
     [HttpPut("username")]
     public async Task<IActionResult> UpdateUsername(UpdateUsernameRequest request)
     {
@@ -85,6 +93,7 @@ public class AuthController : ControllerBase
             return NotFound("User not found");
         }
 
+        Response.Cookies.Append("token", result.Token, GetCookieOptions());
         return Ok(new { username = result.Username });
     }
 }
