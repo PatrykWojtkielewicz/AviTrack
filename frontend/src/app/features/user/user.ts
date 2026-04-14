@@ -28,6 +28,13 @@ export class User implements OnInit {
     this.form = this.fb.group({
       username: [this.currentUsername, [Validators.required, Validators.minLength(3)]]
     });
+
+    if (!this.currentUsername) {
+      this.authService.isLoggedIn().subscribe(() => {
+        this.currentUsername = this.authService.getUsername();
+        this.form.patchValue({ username: this.currentUsername });
+      });
+    }
   }
 
   onSubmit() {

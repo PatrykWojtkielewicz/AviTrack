@@ -70,29 +70,6 @@ public class OpenSkyService
             .FirstOrDefault(s => s?.Callsign.Equals(callsign, StringComparison.OrdinalIgnoreCase) == true);
     }
 
-    public async Task<List<FlightState>> GetFlightsByAircraftType(string icaoTypeCode)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, "https://opensky-network.org/api/states/all");
-        await AttachTokenAsync(request);
-
-        var response = await _http.SendAsync(request);
-        var json = await response.Content.ReadAsStringAsync();
-
-        var data = JsonSerializer.Deserialize<OpenSkyResponse>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        if (data?.States is null)
-            return [];
-
-        return data.States
-            .Select(ParseState)
-            .Where(s => s is not null)
-            .Select(s => s!)
-            .ToList();
-    }
-
     private async Task AttachTokenAsync(HttpRequestMessage request)
     {
         var token = await _tokenService.GetTokenAsync();
